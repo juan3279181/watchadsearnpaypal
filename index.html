@@ -435,8 +435,8 @@
       const resultEl = document.getElementById('withdrawResult');
       
       try {
-        // Call your backend server
-        const response = await fetch('http://localhost:3000/api/payout', {
+        // Call your Render backend - UPDATED URL
+        const response = await fetch('https://watchadsearnpaypal.onrender.com/api/payout', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
