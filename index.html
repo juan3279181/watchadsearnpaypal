@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Notcoin - Watch Ads & Earn Coins</title>
+
+  <!-- Ad Scripts -->
+  <script>(function(s){s.dataset.zone='10039693',s.src='https://groleegni.net/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+  <script src="https://fpyf8.com/88/tag.min.js" data-zone="178019" async></script>
+
+  <style>
+    body { 
+      font-family: Arial, sans-serif; 
+      background: #111; 
+      color: #fff; 
+      margin: 0; 
+      padding: 0; 
+      overflow-x: hidden;
+    }
+    header, footer { 
+      background: #000; 
+      padding: 1em; 
+      text-align: center; 
+    }
+    .container { 
+      width: 95%; 
+      max-width: 600px; 
+      margin: 0 auto; 
+      padding: 10px; 
+    }
+    .card { 
+      background: #1e1e1e; 
+      border-radius: 12px; 
+      padding: 20px; 
+      margin-bottom: 15px; 
+      text-align: center; 
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3); 
+    }
+    h1, h2, h3, p { 
+      margin: 5px 0; 
+    }
+    /* Standard button style */
+    button { 
+      background: orange; 
+      color: black; 
+      border: none; 
+      border-radius: 8px; 
+      padding: 12px 25px; 
+      cursor: pointer; 
+      font-weight: bold; 
+      margin: 5px; 
+      transition: transform 0.1s; 
+    }
+    button:disabled { 
+      opacity: 0.6; 
+      cursor: not-allowed; 
+    }
+    button:hover:not(:disabled) { 
+      transform: scale(1.05); 
+    }
+    button:active:not(:disabled) { 
+      transform: scale(0.97); 
+    }
+    input, select { 
+      border-radius: 8px; 
+      border: none; 
+      padding: 10px; 
+      width: 90%; 
+      max-width: 400px; 
+      margin: 5px 0; 
+    }
+    #adContainer { 
+      width: 100%; 
+      margin: 15px auto; 
+      text-align: center; 
+    }
+    
+    /* Loading Overlay */
+    #loadingOverlay { 
+      display: none; 
+      position: fixed; 
+      top: 0; 
+      left: 0; 
+      width: 100%; 
+      height: 100%; 
+      background: rgba(0,0,0,0.9); 
+      color: #fff; 
+      font-size: 24px; 
+      justify-content: center; 
+      align-items: center; 
+      z-index: 9999; 
+      flex-direction: column;
+    }
+    
+    .spinner {
+      border: 5px solid rgba(255, 165, 0, 0.3);
+      border-radius: 50%;
+      border-top: 5px solid orange;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+      margin-bottom: 20px;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    /* Interstitial Ad Styling */
+    #interstitialAd {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.95);
+      z-index: 10000;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+    
+    .ad-content {
+      background: #222;
+      border-radius: 12px;
+      padding: 20px;
+      max-width: 90%;
+      max-height: 90%;
+      overflow: auto;
+      text-align: center;
+    }
+    
+    .ad-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    
+    .ad-timer {
+      margin-top: 15px;
+      font-size: 16px;
+      color: #aaa;
+    }
+    
+    /* Specific styles for card contents */
+    .daily-tasks-buttons { 
+      display: flex; 
+      flex-wrap: wrap; 
+      justify-content: center; 
+      gap: 10px; 
+    }
+    .withdrawal-inputs { 
+      display: flex; 
+      flex-direction: column; 
+      align-items: center; 
+      gap: 10px; 
+    }
+    #withdrawResult { 
+      margin-top: 10px;
+      color: #ddd; 
+    }
+
+    @media(max-width: 480px){ 
+      button, input, select {
+        width: 100%;
+      } 
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Notcoin</h1>
+    <p>Watch Ads & Earn Coins</p>
+  </header>
+
+  <div id="loadingOverlay">
+    <div class="spinner"></div>
+    <div>Loading Ad...</div>
+  </div>
+  
+  <!-- Interstitial Ad Container -->
+  <div id="interstitialAd">
+    <button class="ad-close" id="adCloseBtn">✕</button>
+    <div class="ad-content">
+      <h2>Advertisement</h2>
+      <p>Please watch this ad to earn coins</p>
+      <div id="adDisplayArea">
+        <!-- Ad content will be inserted here -->
+      </div>
+      <div class="ad-timer" id="adTimer">Ad will close in <span id="countdown">10</span> seconds</div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="card">
+      <h2>Your Balance</h2>
+      <h1 id="balance">0 Coins</h1>
+    </div>
+
+    <div class="card">
+      <h3>Daily Tasks</h3>
+      <p>Watch ads or play mini-games to earn rewards.</p>
+      <div class="daily-tasks-buttons">
+        <button id="watchAd">🎬 Watch Short Ad</button>
+        <button id="clickReward">😎 Click for Reward</button>
+        <button id="playMini">🎮 Play Mini App</button>
+      </div>
+      <div id="adContainer"></div>
+    </div>
+
+    <div class="card">
+      <h3>Withdraw Earnings</h3>
+      <p>Minimum withdrawal: 25,000 Coins = ₹20</p>
+      <div class="withdrawal-inputs">
+        <input type="number" id="coinAmount" placeholder="Enter Coin Amount"/>
+        <input type="email" id="paypalEmail" placeholder="Enter PayPal Email"/>
+        <button id="requestWithdrawal">Request PayPal Withdrawal</button>
+        <div id="withdrawResult"></div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2025 Notcoin — Earn rewards by watching ads</p>
+  </footer>
+
+  <script>
+    // Initialize coins
+    let coins = 10950;
+    const balanceEl = document.getElementById('balance');
+    balanceEl.innerText = coins + ' Coins';
+    function updateBalanceDisplay() { balanceEl.innerText = coins + ' Coins'; }
+
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    const interstitialAd = document.getElementById('interstitialAd');
+    const adDisplayArea = document.getElementById('adDisplayArea');
+    const adTimer = document.getElementById('adTimer');
+    const countdownEl = document.getElementById('countdown');
+    const adCloseBtn = document.getElementById('adCloseBtn');
+    const watchAdBtn = document.getElementById('watchAd');
+    const clickRewardBtn = document.getElementById('clickReward');
+    const playMiniBtn = document.getElementById('playMini');
+    
+    // Set reward amounts
+    const pointsPerAd = 200;
+    const pointsPerClick = 30;
+    const pointsPerMini = 500;
+    
+    let adTimerInterval;
+    let currentAdType = '';
+
+    // Show Interstitial Ad
+    function showInterstitialAd(adType, reward) {
+      return new Promise((resolve) => {
+        // Reset ad display area
+        adDisplayArea.innerHTML = '';
+        
+        // Set current ad type for reward processing
+        currentAdType = adType;
+        
+        // Show the interstitial ad
+        interstitialAd.style.display = 'flex';
+        
+        // Start countdown timer
+        let countdown = 10;
+        countdownEl.textContent = countdown;
+        
+        if (adTimerInterval) clearInterval(adTimerInterval);
+        adTimerInterval = setInterval(() => {
+          countdown--;
+          countdownEl.textContent = countdown;
+          
+          if (countdown <= 0) {
+            clearInterval(adTimerInterval);
+            closeInterstitialAd(true); // Auto-close with reward
+            resolve(true);
+          }
+        }, 1000);
+        
+        // Add mock ad content
+        const mockAd = document.createElement('div');
+        mockAd.innerHTML = `
+          <div style="background: #333; padding: 20px; border-radius: 8px; margin: 10px 0;">
+            <h3 style="color: orange;">Special Offer!</h3>
+            <p>This is a sample advertisement. In a real implementation, this would be an actual ad.</p>
+            <p style="font-size: 14px; color: #aaa;">You will earn ${reward} coins after watching this ad.</p>
+            <div style="background: #444; padding: 15px; border-radius: 5px; margin-top: 10px;">
+              <p style="margin: 0;">🎁 Limited Time Offer: Get 50% off!</p>
+            </div>
+          </div>
+        `;
+        adDisplayArea.appendChild(mockAd);
+        
+        // Close button handler
+        adCloseBtn.onclick = () => {
+          closeInterstitialAd(false); // Manual close without reward
+          resolve(false);
+        };
+      });
+    }
+    
+    // Close interstitial ad
+    function closeInterstitialAd(shouldReward) {
+      clearInterval(adTimerInterval);
+      interstitialAd.style.display = 'none';
+      
+      if (shouldReward) {
+        // Determine reward based on ad type
+        let reward = 0;
+        switch(currentAdType) {
+          case 'watch_short_ad':
+            reward = pointsPerAd;
+            break;
+          case 'click_reward':
+            reward = pointsPerClick;
+            break;
+          case 'play_mini':
+            reward = pointsPerMini;
+            break;
+        }
+        
+        coins += reward;
+        updateBalanceDisplay();
+        alert(`✅ You earned ${reward} coins!`);
+      } else {
+        alert('❌ Ad skipped. No coins earned.');
+      }
+      
+      currentAdType = '';
+    }
+
+    // --- Event Listeners for All Buttons ---
+
+    // Watch Ad Button
+    watchAdBtn.onclick = async ()=>{
+      // Temporarily disable all buttons
+      watchAdBtn.disabled = true;
+      clickRewardBtn.disabled = true;
+      playMiniBtn.disabled = true;
+      
+      // Show loading overlay briefly
+      loadingOverlay.style.display = 'flex';
+      
+      // Simulate loading time
+      setTimeout(async () => {
+        loadingOverlay.style.display = 'none';
+        
+        // Show interstitial ad
+        try {
+          await showInterstitialAd('watch_short_ad', pointsPerAd);
+        } catch(e){ 
+          console.error('Interstitial Ad Error:', e); 
+          alert('❌ Ad failed to load. Please try again.');
+        } finally {
+          // Always re-enable buttons
+          watchAdBtn.disabled = false;
+          clickRewardBtn.disabled = false;
+          playMiniBtn.disabled = false;
+        }
+      }, 1000);
+    };
+
+    // Click Reward Button
+    clickRewardBtn.onclick = async ()=>{
+      // Temporarily disable all buttons
+      watchAdBtn.disabled = true;
+      clickRewardBtn.disabled = true;
+      playMiniBtn.disabled = true;
+
+      // Show loading overlay briefly
+      loadingOverlay.style.display = 'flex';
+      
+      // Simulate loading time
+      setTimeout(async () => {
+        loadingOverlay.style.display = 'none';
+        
+        // Show interstitial ad
+        try {
+          await showInterstitialAd('click_reward', pointsPerClick);
+        } catch(e){ 
+          console.error('Interstitial Ad Error:', e); 
+          alert('❌ Ad failed to load. Please try again.');
+        } finally {
+          // Always re-enable buttons
+          watchAdBtn.disabled = false;
+          clickRewardBtn.disabled = false;
+          playMiniBtn.disabled = false;
+        }
+      }, 1000);
+    };
+    
+    // Play Mini App Button
+    playMiniBtn.onclick = async ()=>{
+      // Temporarily disable all buttons
+      watchAdBtn.disabled = true;
+      clickRewardBtn.disabled = true;
+      playMiniBtn.disabled = true;
+
+      // Show loading overlay briefly
+      loadingOverlay.style.display = 'flex';
+      
+      // Simulate loading time
+      setTimeout(async () => {
+        loadingOverlay.style.display = 'none';
+        
+        // Show interstitial ad
+        try {
+          await showInterstitialAd('play_mini', pointsPerMini);
+        } catch(e){ 
+          console.error('Interstitial Ad Error:', e); 
+          alert('❌ Ad failed to load. Please try again.');
+        } finally {
+          // Always re-enable buttons
+          watchAdBtn.disabled = false;
+          clickRewardBtn.disabled = false;
+          playMiniBtn.disabled = false;
+        }
+      }, 1000);
+    };
+
+    // --- PayPal Payout Integration ---
+    async function processPayPalPayout(email, amountInINR) {
+      const resultEl = document.getElementById('withdrawResult');
+      
+      try {
+        // Call your backend server
+        const response = await fetch('http://localhost:3000/api/payout', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: email,
+            amount: amountInINR,
+            currency: 'INR',
+            userId: 'user123'
+          })
+        });
+
+        const data = await response.json();
+        
+        if (data.success) {
+          return { success: true, data: data };
+        } else {
+          return { success: false, error: data.message || 'Payout failed' };
+        }
+      } catch (error) {
+        console.error('PayPal Payout Error:', error);
+        return { success: false, error: 'Network error processing payout' };
+      }
+    }
+
+    // Coin to INR conversion rate (25,000 coins = ₹20)
+    const COIN_TO_INR_RATE = 20 / 25000;
+
+    // --- Updated Withdrawal Logic ---
+    document.getElementById('requestWithdrawal').onclick = async ()=>{
+      const coinAmount = Number(document.getElementById('coinAmount').value || 0);
+      const paypalEmail = document.getElementById('paypalEmail').value.trim();
+      const resultEl = document.getElementById('withdrawResult'); 
+      
+      resultEl.textContent = '';
+      resultEl.style.color = '#ddd';
+
+      // Validation
+      if(!coinAmount || coinAmount < 25000){ 
+        resultEl.textContent='Minimum withdrawal is 25,000 coins.'; 
+        resultEl.style.color = 'orange';
+        return; 
+      }
+      if(coinAmount > coins){ 
+        resultEl.textContent='Insufficient balance.'; 
+        resultEl.style.color = 'orange';
+        return; 
+      }
+      if(!paypalEmail){ 
+        resultEl.textContent='Enter your PayPal email address.'; 
+        resultEl.style.color = 'orange';
+        return; 
+      }
+
+      // Basic email validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if(!emailRegex.test(paypalEmail)) {
+        resultEl.textContent='Please enter a valid email address.'; 
+        resultEl.style.color = 'orange';
+        return;
+      }
+
+      resultEl.textContent='Processing PayPal withdrawal...';
+      resultEl.style.color = 'yellow';
+
+      try {
+        // Convert coins to INR
+        const amountInINR = coinAmount * COIN_TO_INR_RATE;
+        
+        // Process PayPal payout
+        const payoutResult = await processPayPalPayout(paypalEmail, amountInINR);
+        
+        if (payoutResult.success) {
+          // Deduct coins from balance
+          coins -= coinAmount;
+          updateBalanceDisplay();
+          resultEl.textContent = `✅ Withdrawal successful! ₹${amountInINR.toFixed(2)} sent to ${paypalEmail}`;
+          resultEl.style.color = 'lightgreen';
+          
+          // Clear form
+          document.getElementById('coinAmount').value = '';
+          document.getElementById('paypalEmail').value = '';
+        } else {
+          resultEl.textContent = `❌ PayPal Error: ${payoutResult.error}`;
+          resultEl.style.color = 'red';
+        }
+      } catch(err) { 
+        console.error('Withdrawal Error:', err); 
+        resultEl.textContent = '❌ Network error processing withdrawal.'; 
+        resultEl.style.color = 'red';
+      }
+    };
+
+    // Auto-calculate INR amount when coins are entered
+    document.getElementById('coinAmount').addEventListener('input', function() {
+      const coinAmount = Number(this.value || 0);
+      const amountInINR = coinAmount * COIN_TO_INR_RATE;
+      const button = document.getElementById('requestWithdrawal');
+      
+      if (coinAmount >= 25000) {
+        button.textContent = `Request ₹${amountInINR.toFixed(2)} PayPal Withdrawal`;
+      } else {
+        button.textContent = 'Request PayPal Withdrawal';
+      }
+    });
+  </script>
+</body>
+</html>
