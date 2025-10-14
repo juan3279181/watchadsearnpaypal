@@ -251,32 +251,42 @@
 
     const loadingOverlay = document.getElementById('loadingOverlay');
     let monetagInterstitialLoaded = false;
+    let adNetworksReady = false;
 
     // Check if Monetag interstitial script is loaded
     function checkMonetagInterstitial() {
-      if (typeof window.vgn !== 'undefined') {
+      // Check for different possible Monetag global objects
+      if (typeof window.vgn !== 'undefined' || typeof window.vignette !== 'undefined') {
         monetagInterstitialLoaded = true;
         console.log('Monetag interstitial script loaded successfully');
-        
-        // Configure interstitial ads
-        window.vgn.configure({
-          zoneId: '10039693',
-          onAdLoad: function() {
-            console.log('Monetag interstitial ad loaded');
-          },
-          onAdShow: function() {
-            console.log('Monetag interstitial ad shown');
-          },
-          onAdClose: function() {
-            console.log('Monetag interstitial ad closed');
-          },
-          onAdError: function(error) {
-            console.log('Monetag interstitial ad error:', error);
-          }
-        });
       } else {
         console.log('Monetag interstitial script not loaded yet');
-        setTimeout(checkMonetagInterstitial, 1000);
+        setTimeout(checkMonetagInterstitial, 500);
+      }
+    }
+
+    // Check if all ad networks are ready
+    function checkAdNetworks() {
+      let networksReady = 0;
+      
+      // Check Google AdSense
+      if (typeof adsbygoogle !== 'undefined') {
+        networksReady++;
+      }
+      
+      // Check Monetag Banner
+      if (typeof monetag !== 'undefined') {
+        networksReady++;
+      }
+      
+      // Check PropellerAds (assume ready if script loaded)
+      networksReady++;
+      
+      if (networksReady >= 2) { // At least 2 networks ready
+        adNetworksReady = true;
+        console.log('Ad networks are ready');
+      } else {
+        setTimeout(checkAdNetworks, 500);
       }
     }
 
@@ -286,8 +296,10 @@
       
       // Initialize Google AdSense
       try {
-        (adsbygoogle = window.adsbygoogle || []).push({});
-        console.log('Google AdSense initialized');
+        if (typeof adsbygoogle !== 'undefined') {
+          (adsbygoogle = window.adsbygoogle || []).push({});
+          console.log('Google AdSense initialized');
+        }
       } catch (e) {
         console.log('Google AdSense error:', e);
       }
@@ -301,71 +313,89 @@
           responsive: true
         });
         console.log('Monetag banner ads initialized');
-      } else {
-        console.log('Monetag banner script not loaded yet');
-        setTimeout(() => {
-          if (typeof monetag !== 'undefined') {
-            monetag.adunit.createAdUnit("monetag-banner", {
-              slotId: "10039693",
-              format: "inread",
-              responsive: true
-            });
-            console.log('Monetag banner ads initialized on retry');
-          }
-        }, 2000);
       }
       
       // Check Monetag Interstitial
       checkMonetagInterstitial();
       
-      // PropellerAds auto-initializes
-      console.log('PropellerAds initialized');
+      // Check all networks
+      checkAdNetworks();
     }
 
-    // Show Monetag Interstitial Ad
+    // Show Monetag Interstitial Ad - FIXED VERSION
     function showMonetagInterstitial(reward) {
-      loadingOverlay.style.display = 'flex';
       console.log('Attempting to show Monetag interstitial ad...');
       
-      if (monetagInterstitialLoaded && typeof window.vgn !== 'undefined') {
+      // Show loading overlay briefly
+      loadingOverlay.style.display = 'flex';
+      
+      // Try to trigger Monetag interstitial with multiple methods
+      let adShown = false;
+      
+      // Method 1: Try window.vgn
+      if (typeof window.vgn !== 'undefined') {
         try {
-          // Show the interstitial ad
           window.vgn.show();
-          console.log('Monetag interstitial ad triggered');
-          
-          // Reward coins after ad is shown
-          setTimeout(() => {
-            loadingOverlay.style.display = 'none';
-            coins += reward;
-            updateBalanceDisplay();
-            alert(`✅ You earned ${reward} coins from watching the interstitial ad!`);
-          }, 3000);
-          
+          adShown = true;
+          console.log('Monetag interstitial triggered via vgn');
         } catch (error) {
-          console.log('Monetag interstitial error:', error);
+          console.log('vgn method failed:', error);
+        }
+      }
+      
+      // Method 2: Try window.vignette
+      if (!adShown && typeof window.vignette !== 'undefined') {
+        try {
+          window.vignette.show();
+          adShown = true;
+          console.log('Monetag interstitial triggered via vignette');
+        } catch (error) {
+          console.log('vignette method failed:', error);
+        }
+      }
+      
+      // Method 3: Try direct function call from the script
+      if (!adShown) {
+        try {
+          // The script might have created a global function
+          if (typeof showVignette !== 'undefined') {
+            showVignette();
+            adShown = true;
+            console.log('Monetag interstitial triggered via showVignette');
+          }
+        } catch (error) {
+          console.log('showVignette method failed:', error);
+        }
+      }
+      
+      if (adShown) {
+        // Ad was triggered, wait a bit then reward
+        setTimeout(() => {
           loadingOverlay.style.display = 'none';
-          // Fallback: still reward coins
           coins += reward;
           updateBalanceDisplay();
-          alert(`✅ You earned ${reward} coins! (Ad may not have loaded)`);
-        }
+          alert(`✅ You earned ${reward} coins from watching the interstitial ad!`);
+        }, 2000);
       } else {
-        console.log('Monetag interstitial not available');
-        loadingOverlay.style.display = 'none';
-        // Fallback
-        coins += reward;
-        updateBalanceDisplay();
-        alert(`✅ You earned ${reward} coins!`);
+        // No ad could be triggered, use fallback
+        console.log('No Monetag interstitial could be triggered, using fallback');
+        setTimeout(() => {
+          loadingOverlay.style.display = 'none';
+          coins += reward;
+          updateBalanceDisplay();
+          alert(`✅ You earned ${reward} coins! (Ad simulation)`);
+        }, 1500);
       }
     }
 
-    // Show regular ad and reward coins
+    // Show regular ad and reward coins - FIXED VERSION
     function showAd(reward, adNetwork) {
-      loadingOverlay.style.display = 'flex';
-      
       console.log(`Showing ${adNetwork} ad for ${reward} coins`);
       
-      // Simulate ad loading and display
+      // Show loading overlay briefly
+      loadingOverlay.style.display = 'flex';
+      
+      // Simulate ad loading and display (shorter time)
       setTimeout(() => {
         loadingOverlay.style.display = 'none';
         
@@ -379,22 +409,22 @@
         // Refresh ads after viewing
         refreshAds();
         
-      }, 3000); // 3 second ad simulation
+      }, 1500); // Reduced from 3000 to 1500ms
     }
 
     // Refresh all ads
     function refreshAds() {
       // Refresh Google AdSense
       try {
-        (adsbygoogle = window.adsbygoogle || []).push({});
+        if (typeof adsbygoogle !== 'undefined') {
+          (adsbygoogle = window.adsbygoogle || []).push({});
+        }
       } catch (e) {}
       
       // Refresh Monetag Banner
       if (typeof monetag !== 'undefined') {
         monetag.adunit.refresh("monetag-banner");
       }
-      
-      // PropellerAds auto-refreshes
     }
 
     // Initialize when page loads
