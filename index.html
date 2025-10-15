@@ -5,9 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Notcoin - Watch Ads & Earn Coins</title>
 
-  <!-- Multiple Ad Networks for Better Earnings -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3940256099942544" crossorigin="anonymous"></script>
-
   <!-- Monetag Interstitial Ads Script -->
   <script>(function(s){s.dataset.zone='10039693',s.src='https://groleegni.net/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
 
@@ -20,8 +17,6 @@
       document.head.appendChild(script);
     })();
   </script>
-
-  <script type="text/javascript" src="//deloplen.com/apu.php?zoneid=4450049" async data-cfasync="false"></script>
 
   <style>
     body { 
@@ -180,20 +175,6 @@
       <p>Click buttons below to watch ads and earn rewards</p>
       
       <div id="adContainer">
-        <!-- Google AdSense Unit -->
-        <div class="ad-unit">
-          <div class="ad-label">Google AdSense - Earn 200 coins</div>
-          <div class="ad-display">
-            <ins class="adsbygoogle"
-                 style="display:block"
-                 data-ad-client="ca-pub-3940256099942544"
-                 data-ad-slot="1234567890"
-                 data-ad-format="auto"
-                 data-full-width-responsive="true"></ins>
-          </div>
-          <button onclick="showAd(200, 'google')">🎬 Watch Google Ad (+200 coins)</button>
-        </div>
-
         <!-- Monetag Interstitial Ad Unit -->
         <div class="ad-unit">
           <div class="ad-label">Monetag Interstitial Ad - Earn 250 coins</div>
@@ -212,13 +193,13 @@
           <button onclick="showAd(150, 'monetag')">🖼️ Watch Banner Ad (+150 coins)</button>
         </div>
 
-        <!-- PropellerAds Unit -->
+        <!-- Additional Monetag Ad Unit -->
         <div class="ad-unit">
-          <div class="ad-label">PropellerAds - Earn 300 coins</div>
-          <div class="ad-display" id="propeller-ad">
-            <div>PropellerAds Loading...</div>
+          <div class="ad-label">Monetag Video Ad - Earn 300 coins</div>
+          <div class="ad-display">
+            <div>Click to watch video advertisement</div>
           </div>
-          <button onclick="showAd(300, 'propeller')">🎮 Watch Propeller Ad (+300 coins)</button>
+          <button onclick="showAd(300, 'monetag')">🎬 Watch Video Ad (+300 coins)</button>
         </div>
       </div>
     </div>
@@ -269,20 +250,17 @@
     function checkAdNetworks() {
       let networksReady = 0;
       
-      // Check Google AdSense
-      if (typeof adsbygoogle !== 'undefined') {
-        networksReady++;
-      }
-      
       // Check Monetag Banner
       if (typeof monetag !== 'undefined') {
         networksReady++;
       }
       
-      // Check PropellerAds (assume ready if script loaded)
-      networksReady++;
+      // Monetag Interstitial
+      if (monetagInterstitialLoaded) {
+        networksReady++;
+      }
       
-      if (networksReady >= 2) { // At least 2 networks ready
+      if (networksReady >= 1) { // At least 1 network ready
         adNetworksReady = true;
         console.log('Ad networks are ready');
       } else {
@@ -293,16 +271,6 @@
     // Initialize Ad Networks
     function initializeAds() {
       console.log('Initializing ad networks...');
-      
-      // Initialize Google AdSense
-      try {
-        if (typeof adsbygoogle !== 'undefined') {
-          (adsbygoogle = window.adsbygoogle || []).push({});
-          console.log('Google AdSense initialized');
-        }
-      } catch (e) {
-        console.log('Google AdSense error:', e);
-      }
       
       // Initialize Monetag Banner Ads
       if (typeof monetag !== 'undefined') {
@@ -414,13 +382,6 @@
 
     // Refresh all ads
     function refreshAds() {
-      // Refresh Google AdSense
-      try {
-        if (typeof adsbygoogle !== 'undefined') {
-          (adsbygoogle = window.adsbygoogle || []).push({});
-        }
-      } catch (e) {}
-      
       // Refresh Monetag Banner
       if (typeof monetag !== 'undefined') {
         monetag.adunit.refresh("monetag-banner");
