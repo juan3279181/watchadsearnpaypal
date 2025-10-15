@@ -5,6 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Notcoin - Watch Ads & Earn Coins</title>
 
+  <!-- Corrected One-Click Tag Script for Monetag -->
+  <script>
+  (function() {
+    var s = document.createElement('script');
+    s.dataset.zone = '10046811';
+    s.src = 'https://al5sm.com/tag.min.js';
+    document.head.appendChild(s);
+  })();
+  </script>
+
   <!-- Monetag Interstitial Ads Script -->
   <script>(function(s){s.dataset.zone='10039693',s.src='https://groleegni.net/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
 
@@ -181,7 +191,7 @@
           <div class="ad-display">
             <div>Click button to show full-screen interstitial ad</div>
           </div>
-          <button onclick="showMonetagInterstitial(250)">📱 Watch Interstitial Ad (+250 coins)</button>
+          <button>📱 Watch Interstitial Ad (+250 coins)</button>
         </div>
 
         <!-- Monetag Banner Ad Unit -->
@@ -190,7 +200,7 @@
           <div class="ad-display" id="monetag-banner">
             <div>Monetag Banner Loading...</div>
           </div>
-          <button onclick="showAd(150, 'monetag')">🖼️ Watch Banner Ad (+150 coins)</button>
+          <button>🖼️ Watch Banner Ad (+150 coins)</button>
         </div>
 
         <!-- Additional Monetag Ad Unit -->
@@ -199,7 +209,7 @@
           <div class="ad-display">
             <div>Click to watch video advertisement</div>
           </div>
-          <button onclick="showAd(300, 'monetag')">🎬 Watch Video Ad (+300 coins)</button>
+          <button>🎬 Watch Video Ad (+300 coins)</button>
         </div>
       </div>
     </div>
@@ -225,7 +235,7 @@
     let coins = 10950;
     const balanceEl = document.getElementById('balance');
     balanceEl.innerText = coins + ' Coins';
-    
+
     function updateBalanceDisplay() { 
       balanceEl.innerText = coins + ' Coins'; 
     }
@@ -254,12 +264,9 @@
     }
 
     // --- FIXED PAYPAL PAYOUT INTEGRATION ---
-    // UPDATED: Correct backend URL with "instant81"
     async function processPayPalPayout(email, amountInINR) {
       try {
         console.log('Sending payout request to backend...');
-        
-        // FIXED: Using the correct backend URL
         const response = await fetch('https://watchadsearnpaypalinstant81.onrender.com/api/payout', {
           method: 'POST',
           headers: {
@@ -272,10 +279,8 @@
             userId: 'user123'
           })
         });
-
         const data = await response.json();
         console.log('Backend response:', data);
-        
         return data;
       } catch (error) {
         console.error('PayPal Payout Error:', error);
@@ -286,10 +291,9 @@
       }
     }
 
-    // Coin to INR conversion rate
     const COIN_TO_INR_RATE = 20 / 25000;
 
-    // --- UPDATED WITHDRAWAL LOGIC WITH BETTER ERROR HANDLING ---
+    // Withdrawal button handler
     document.getElementById('requestWithdrawal').onclick = async ()=>{
       const coinAmount = Number(document.getElementById('coinAmount').value || 0);
       const paypalEmail = document.getElementById('paypalEmail').value.trim();
@@ -298,7 +302,6 @@
       resultEl.textContent = '';
       resultEl.style.color = '#ddd';
 
-      // Validation
       if(!coinAmount || coinAmount < 25000){ 
         resultEl.textContent='Minimum withdrawal is 25,000 coins.'; 
         resultEl.style.color = 'orange';
@@ -328,18 +331,15 @@
 
       try {
         const amountInINR = coinAmount * COIN_TO_INR_RATE;
-        console.log(`Processing withdrawal: ${coinAmount} coins = ₹${amountInINR} to ${paypalEmail}`);
-        
         const payoutResult = await processPayPalPayout(paypalEmail, amountInINR);
-        
         loadingOverlay.style.display = 'none';
-        
+
         if (payoutResult.success) {
           coins -= coinAmount;
           updateBalanceDisplay();
           resultEl.textContent = `✅ Withdrawal successful! ₹${amountInINR.toFixed(2)} sent to ${paypalEmail}`;
           resultEl.style.color = 'lightgreen';
-          
+
           document.getElementById('coinAmount').value = '';
           document.getElementById('paypalEmail').value = '';
         } else {
@@ -360,7 +360,6 @@
       const coinAmount = Number(this.value || 0);
       const amountInINR = coinAmount * COIN_TO_INR_RATE;
       const button = document.getElementById('requestWithdrawal');
-      
       if (coinAmount >= 25000) {
         button.textContent = `Request ₹${amountInINR.toFixed(2)} PayPal Withdrawal`;
       } else {
@@ -368,16 +367,32 @@
       }
     });
 
-    // Test backend connection on load - UPDATED URL
+    // Test backend connection on load
     window.addEventListener('load', async () => {
       try {
-        // FIXED: Using the correct backend URL for health check
         const response = await fetch('https://watchadsearnpaypalinstant81.onrender.com/health');
         const data = await response.json();
         console.log('Backend connection test:', data);
       } catch (error) {
         console.error('Backend connection failed:', error);
       }
+    });
+
+    // Add a global handler for all ad buttons
+    document.querySelectorAll('#adContainer button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Detect reward based on button text
+        let reward = 0;
+        const text = btn.innerText;
+        if (text.includes('+250')) reward = 250;
+        else if (text.includes('+150')) reward = 150;
+        else if (text.includes('+300')) reward = 300;
+        else if (text.includes('+')) {
+          const match = text.match(/\+(\d+)/);
+          if (match) reward = parseInt(match[1]);
+        }
+        showAd(reward, 'realAd');
+      });
     });
   </script>
 </body>
