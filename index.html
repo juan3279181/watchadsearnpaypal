@@ -5,15 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Notcoin - Watch Ads & Earn Coins</title>
 
-  <!-- Corrected One-Click Tag Script for Monetag -->
-  <script>
-  (function() {
-    var s = document.createElement('script');
-    s.dataset.zone = '10046811';
-    s.src = 'https://al5sm.com/tag.min.js';
-    document.head.appendChild(s);
-  })();
-  </script>
+  <!-- Correct SDK script for libtl.com -->
+  <script src='//libtl.com/sdk.js' data-zone='10047074' data-sdk='show_10047074'></script>
 
   <!-- Monetag Interstitial Ads Script -->
   <script>(function(s){s.dataset.zone='10039693',s.src='https://groleegni.net/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
@@ -114,7 +107,6 @@
       z-index: 9999; 
       flex-direction: column;
     }
-    
     .spinner {
       border: 5px solid rgba(255, 165, 0, 0.3);
       border-radius: 50%;
@@ -124,13 +116,11 @@
       animation: spin 1s linear infinite;
       margin-bottom: 20px;
     }
-    
     @keyframes spin {
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }
-
-    /* Ad Unit Styling */
+    /* Ad unit styling */
     .ad-unit {
       background: #2a2a2a;
       padding: 20px;
@@ -143,8 +133,7 @@
       font-size: 12px;
       margin-bottom: 10px;
     }
-    
-    /* Ad Display Areas */
+    /* Ad display area style */
     .ad-display {
       min-height: 100px;
       display: flex;
@@ -154,7 +143,6 @@
       background: #333;
       border-radius: 8px;
     }
-
     @media(max-width: 480px){ 
       button, input {
         width: 100%;
@@ -162,7 +150,6 @@
     }
   </style>
 </head>
-
 <body>
   <header>
     <h1>Notcoin</h1>
@@ -185,32 +172,29 @@
       <p>Click buttons below to watch ads and earn rewards</p>
       
       <div id="adContainer">
-        <!-- Monetag Interstitial Ad Unit -->
+        <!-- Ad buttons trigger SDK ads -->
         <div class="ad-unit">
-          <div class="ad-label">Monetag Interstitial Ad - Earn 250 coins</div>
+          <div class="ad-label">Rewarded Interstitial</div>
           <div class="ad-display">
-            <div>Click button to show full-screen interstitial ad</div>
+            <div>Click to watch ad and earn coins</div>
           </div>
-          <button>📱 Watch Interstitial Ad (+250 coins)</button>
+          <button id="adBtn1">🎯 Watch Ad (+250 coins)</button>
         </div>
-
-        <!-- Monetag Banner Ad Unit -->
         <div class="ad-unit">
-          <div class="ad-label">Monetag Banner Ad - Earn 150 coins</div>
-          <div class="ad-display" id="monetag-banner">
-            <div>Monetag Banner Loading...</div>
-          </div>
-          <button>🖼️ Watch Banner Ad (+150 coins)</button>
-        </div>
-
-        <!-- Additional Monetag Ad Unit -->
-        <div class="ad-unit">
-          <div class="ad-label">Monetag Video Ad - Earn 300 coins</div>
+          <div class="ad-label">Rewarded Popup</div>
           <div class="ad-display">
-            <div>Click to watch video advertisement</div>
+            <div>Click to watch ad and earn coins</div>
           </div>
-          <button>🎬 Watch Video Ad (+300 coins)</button>
+          <button id="adBtn2">🎯 Watch Ad (+150 coins)</button>
         </div>
+        <div class="ad-unit">
+          <div class="ad-label">Rewarded Popup</div>
+          <div class="ad-display">
+            <div>Click to watch ad and earn coins</div>
+          </div>
+          <button id="adBtn3">🎯 Watch Ad (+300 coins)</button>
+        </div>
+        <!-- Add more buttons as needed -->
       </div>
     </div>
 
@@ -236,163 +220,130 @@
     const balanceEl = document.getElementById('balance');
     balanceEl.innerText = coins + ' Coins';
 
-    function updateBalanceDisplay() { 
-      balanceEl.innerText = coins + ' Coins'; 
+    function updateBalanceDisplay() {
+      balanceEl.innerText = coins + ' Coins';
     }
 
     const loadingOverlay = document.getElementById('loadingOverlay');
 
-    // Ad functions (your existing code)
-    function showMonetagInterstitial(reward) {
-      loadingOverlay.style.display = 'flex';
-      setTimeout(() => {
-        loadingOverlay.style.display = 'none';
-        coins += reward;
+    // Function to show ad and reward user
+    function showAdAndReward(rewardCoins) {
+      show_10047074('pop').then(() => {
+        coins += rewardCoins;
         updateBalanceDisplay();
-        alert(`✅ You earned ${reward} coins!`);
-      }, 1500);
+        alert(`You earned ${rewardCoins} coins!`);
+      }).catch(() => {
+        alert('Ad failed to load or be played.');
+      });
     }
 
-    function showAd(reward, adNetwork) {
-      loadingOverlay.style.display = 'flex';
-      setTimeout(() => {
-        loadingOverlay.style.display = 'none';
-        coins += reward;
-        updateBalanceDisplay();
-        alert(`✅ You earned ${reward} coins from ${adNetwork} ad!`);
-      }, 1500);
-    }
+    // Attach event listeners to ad buttons
+    document.getElementById('adBtn1').addEventListener('click', () => {
+      showAdAndReward(250);
+    });
+    document.getElementById('adBtn2').addEventListener('click', () => {
+      showAdAndReward(150);
+    });
+    document.getElementById('adBtn3').addEventListener('click', () => {
+      showAdAndReward(300);
+    });
 
-    // --- FIXED PAYPAL PAYOUT INTEGRATION ---
+    // Wallet withdrawal code
     async function processPayPalPayout(email, amountInINR) {
       try {
-        console.log('Sending payout request to backend...');
         const response = await fetch('https://watchadsearnpaypalinstant81.onrender.com/api/payout', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email: email,
-            amount: amountInINR,
-            currency: 'INR',
-            userId: 'user123'
-          })
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, amount: amountInINR, currency: 'INR', userId: 'user123' }),
         });
         const data = await response.json();
-        console.log('Backend response:', data);
         return data;
       } catch (error) {
-        console.error('PayPal Payout Error:', error);
-        return { 
-          success: false, 
-          error: 'Network error: ' + error.message 
-        };
+        console.error('Payout error:', error);
+        return { success: false, error: error.message };
       }
     }
 
     const COIN_TO_INR_RATE = 20 / 25000;
 
     // Withdrawal button handler
-    document.getElementById('requestWithdrawal').onclick = async ()=>{
-      const coinAmount = Number(document.getElementById('coinAmount').value || 0);
-      const paypalEmail = document.getElementById('paypalEmail').value.trim();
-      const resultEl = document.getElementById('withdrawResult'); 
-      
-      resultEl.textContent = '';
-      resultEl.style.color = '#ddd';
+    document.getElementById('requestWithdrawal').onclick=async ()=>{
+      const coinAmount=Number(document.getElementById('coinAmount').value || 0);
+      const paypalEmail=document.getElementById('paypalEmail').value.trim();
+      const resultEl=document.getElementById('withdrawResult');
 
-      if(!coinAmount || coinAmount < 25000){ 
-        resultEl.textContent='Minimum withdrawal is 25,000 coins.'; 
-        resultEl.style.color = 'orange';
-        return; 
+      resultEl.textContent='';
+      resultEl.style.color='#ddd';
+
+      if(!coinAmount || coinAmount<25000){ 
+        resultEl.textContent='Minimum withdrawal is 25,000 coins.';
+        resultEl.style.color='orange';
+        return;
       }
-      if(coinAmount > coins){ 
-        resultEl.textContent='Insufficient balance.'; 
-        resultEl.style.color = 'orange';
-        return; 
+      if(coinAmount>coins){ 
+        resultEl.textContent='Insufficient balance.';
+        resultEl.style.color='orange';
+        return;
       }
       if(!paypalEmail){ 
-        resultEl.textContent='Enter your PayPal email address.'; 
-        resultEl.style.color = 'orange';
-        return; 
-      }
-
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if(!emailRegex.test(paypalEmail)) {
-        resultEl.textContent='Please enter a valid email address.'; 
-        resultEl.style.color = 'orange';
+        resultEl.textContent='Enter your PayPal email.';
+        resultEl.style.color='orange';
         return;
       }
 
-      loadingOverlay.style.display = 'flex';
-      resultEl.textContent = 'Processing PayPal withdrawal...';
-      resultEl.style.color = 'yellow';
+      const emailRegex=/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
+      if(!emailRegex.test(paypalEmail)){ 
+        resultEl.textContent='Please enter a valid email.';
+        resultEl.style.color='orange';
+        return;
+      }
 
-      try {
-        const amountInINR = coinAmount * COIN_TO_INR_RATE;
-        const payoutResult = await processPayPalPayout(paypalEmail, amountInINR);
-        loadingOverlay.style.display = 'none';
+      // Process withdrawal
+      loadingOverlay.style.display='flex';
+      resultEl.textContent='Processing...';
+      resultEl.style.color='yellow';
 
-        if (payoutResult.success) {
-          coins -= coinAmount;
+      try{
+        const amountINR=coinAmount*COIN_TO_INR_RATE;
+        const payout=await processPayPalPayout(paypalEmail, amountINR);
+        loadingOverlay.style.display='none';
+
+        if(payout.success){
+          coins-=coinAmount;
           updateBalanceDisplay();
-          resultEl.textContent = `✅ Withdrawal successful! ₹${amountInINR.toFixed(2)} sent to ${paypalEmail}`;
-          resultEl.style.color = 'lightgreen';
-
-          document.getElementById('coinAmount').value = '';
-          document.getElementById('paypalEmail').value = '';
-        } else {
-          resultEl.textContent = `❌ Withdrawal failed: ${payoutResult.error || payoutResult.message || 'Unknown error'}`;
-          resultEl.style.color = 'red';
-          console.error('Withdrawal failed:', payoutResult);
+          resultEl.textContent=`✅ Withdrawal successful! ₹${amountINR.toFixed(2)} sent to ${paypalEmail}`;
+          resultEl.style.color='lightgreen';
+          document.getElementById('coinAmount').value='';
+          document.getElementById('paypalEmail').value='';
+        }else{
+          resultEl.textContent=`❌ Failed: ${payout.error}`;
+          resultEl.style.color='red';
         }
-      } catch(err) { 
-        loadingOverlay.style.display = 'none';
-        console.error('Withdrawal Error:', err);
-        resultEl.textContent = '❌ Network error processing withdrawal. Check console for details.'; 
-        resultEl.style.color = 'red';
+      } catch(e){
+        loadingOverlay.style.display='none';
+        resultEl.textContent='Network error.';
+        resultEl.style.color='red';
       }
     };
 
-    // Auto-calculate INR amount
-    document.getElementById('coinAmount').addEventListener('input', function() {
-      const coinAmount = Number(this.value || 0);
-      const amountInINR = coinAmount * COIN_TO_INR_RATE;
-      const button = document.getElementById('requestWithdrawal');
-      if (coinAmount >= 25000) {
-        button.textContent = `Request ₹${amountInINR.toFixed(2)} PayPal Withdrawal`;
-      } else {
-        button.textContent = 'Request PayPal Withdrawal';
+    // Update INR estimate on coin input
+    document.getElementById('coinAmount').addEventListener('input', ()=>{
+      const amount=Number(document.getElementById('coinAmount').value || 0);
+      const inr=amount*COIN_TO_INR_RATE;
+      const btn=document.getElementById('requestWithdrawal');
+      if(amount>=25000){
+        btn.textContent=`Request ₹${inr.toFixed(2)} PayPal`;
+      }else{
+        btn.textContent='Request PayPal Withdrawal';
       }
     });
 
-    // Test backend connection on load
-    window.addEventListener('load', async () => {
-      try {
-        const response = await fetch('https://watchadsearnpaypalinstant81.onrender.com/health');
-        const data = await response.json();
-        console.log('Backend connection test:', data);
-      } catch (error) {
-        console.error('Backend connection failed:', error);
-      }
-    });
-
-    // Add a global handler for all ad buttons
-    document.querySelectorAll('#adContainer button').forEach(btn => {
-      btn.addEventListener('click', () => {
-        // Detect reward based on button text
-        let reward = 0;
-        const text = btn.innerText;
-        if (text.includes('+250')) reward = 250;
-        else if (text.includes('+150')) reward = 150;
-        else if (text.includes('+300')) reward = 300;
-        else if (text.includes('+')) {
-          const match = text.match(/\+(\d+)/);
-          if (match) reward = parseInt(match[1]);
-        }
-        showAd(reward, 'realAd');
-      });
+    // Optional: test backend connection
+    window.addEventListener('load', ()=>{
+      fetch('https://watchadsearnpaypalinstant81.onrender.com/health')
+      .then(res=>res.json())
+      .then(data=>console.log('Backend healthy:', data))
+      .catch(err=>console.log('Backend check failed', err));
     });
   </script>
 </body>
