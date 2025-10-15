@@ -161,7 +161,7 @@
 
   <div id="loadingOverlay">
     <div class="spinner"></div>
-    <div>Loading Ad...</div>
+    <div>Processing Withdrawal...</div>
   </div>
 
   <div class="container">
@@ -231,175 +231,33 @@
     }
 
     const loadingOverlay = document.getElementById('loadingOverlay');
-    let monetagInterstitialLoaded = false;
-    let adNetworksReady = false;
 
-    // Check if Monetag interstitial script is loaded
-    function checkMonetagInterstitial() {
-      // Check for different possible Monetag global objects
-      if (typeof window.vgn !== 'undefined' || typeof window.vignette !== 'undefined') {
-        monetagInterstitialLoaded = true;
-        console.log('Monetag interstitial script loaded successfully');
-      } else {
-        console.log('Monetag interstitial script not loaded yet');
-        setTimeout(checkMonetagInterstitial, 500);
-      }
-    }
-
-    // Check if all ad networks are ready
-    function checkAdNetworks() {
-      let networksReady = 0;
-      
-      // Check Monetag Banner
-      if (typeof monetag !== 'undefined') {
-        networksReady++;
-      }
-      
-      // Monetag Interstitial
-      if (monetagInterstitialLoaded) {
-        networksReady++;
-      }
-      
-      if (networksReady >= 1) { // At least 1 network ready
-        adNetworksReady = true;
-        console.log('Ad networks are ready');
-      } else {
-        setTimeout(checkAdNetworks, 500);
-      }
-    }
-
-    // Initialize Ad Networks
-    function initializeAds() {
-      console.log('Initializing ad networks...');
-      
-      // Initialize Monetag Banner Ads
-      if (typeof monetag !== 'undefined') {
-        monetag.adunit = monetag.adunit || {};
-        monetag.adunit.createAdUnit("monetag-banner", {
-          slotId: "10039693", // Your Monetag slot ID
-          format: "inread",
-          responsive: true
-        });
-        console.log('Monetag banner ads initialized');
-      }
-      
-      // Check Monetag Interstitial
-      checkMonetagInterstitial();
-      
-      // Check all networks
-      checkAdNetworks();
-    }
-
-    // Show Monetag Interstitial Ad - FIXED VERSION
+    // Ad functions (your existing code)
     function showMonetagInterstitial(reward) {
-      console.log('Attempting to show Monetag interstitial ad...');
-      
-      // Show loading overlay briefly
       loadingOverlay.style.display = 'flex';
-      
-      // Try to trigger Monetag interstitial with multiple methods
-      let adShown = false;
-      
-      // Method 1: Try window.vgn
-      if (typeof window.vgn !== 'undefined') {
-        try {
-          window.vgn.show();
-          adShown = true;
-          console.log('Monetag interstitial triggered via vgn');
-        } catch (error) {
-          console.log('vgn method failed:', error);
-        }
-      }
-      
-      // Method 2: Try window.vignette
-      if (!adShown && typeof window.vignette !== 'undefined') {
-        try {
-          window.vignette.show();
-          adShown = true;
-          console.log('Monetag interstitial triggered via vignette');
-        } catch (error) {
-          console.log('vignette method failed:', error);
-        }
-      }
-      
-      // Method 3: Try direct function call from the script
-      if (!adShown) {
-        try {
-          // The script might have created a global function
-          if (typeof showVignette !== 'undefined') {
-            showVignette();
-            adShown = true;
-            console.log('Monetag interstitial triggered via showVignette');
-          }
-        } catch (error) {
-          console.log('showVignette method failed:', error);
-        }
-      }
-      
-      if (adShown) {
-        // Ad was triggered, wait a bit then reward
-        setTimeout(() => {
-          loadingOverlay.style.display = 'none';
-          coins += reward;
-          updateBalanceDisplay();
-          alert(`✅ You earned ${reward} coins from watching the interstitial ad!`);
-        }, 2000);
-      } else {
-        // No ad could be triggered, use fallback
-        console.log('No Monetag interstitial could be triggered, using fallback');
-        setTimeout(() => {
-          loadingOverlay.style.display = 'none';
-          coins += reward;
-          updateBalanceDisplay();
-          alert(`✅ You earned ${reward} coins! (Ad simulation)`);
-        }, 1500);
-      }
-    }
-
-    // Show regular ad and reward coins - FIXED VERSION
-    function showAd(reward, adNetwork) {
-      console.log(`Showing ${adNetwork} ad for ${reward} coins`);
-      
-      // Show loading overlay briefly
-      loadingOverlay.style.display = 'flex';
-      
-      // Simulate ad loading and display (shorter time)
       setTimeout(() => {
         loadingOverlay.style.display = 'none';
-        
-        // Reward coins to user
         coins += reward;
         updateBalanceDisplay();
-        
-        // Show success message
-        alert(`✅ You earned ${reward} coins from watching the ${adNetwork} ad!`);
-        
-        // Refresh ads after viewing
-        refreshAds();
-        
-      }, 1500); // Reduced from 3000 to 1500ms
+        alert(`✅ You earned ${reward} coins!`);
+      }, 1500);
     }
 
-    // Refresh all ads
-    function refreshAds() {
-      // Refresh Monetag Banner
-      if (typeof monetag !== 'undefined') {
-        monetag.adunit.refresh("monetag-banner");
-      }
+    function showAd(reward, adNetwork) {
+      loadingOverlay.style.display = 'flex';
+      setTimeout(() => {
+        loadingOverlay.style.display = 'none';
+        coins += reward;
+        updateBalanceDisplay();
+        alert(`✅ You earned ${reward} coins from ${adNetwork} ad!`);
+      }, 1500);
     }
 
-    // Initialize when page loads
-    window.addEventListener('load', function() {
-      console.log('Page loaded, initializing ads...');
-      setTimeout(initializeAds, 1000);
-    });
-
-    // --- PayPal Payout Integration ---
+    // --- FIXED PAYPAL PAYOUT INTEGRATION ---
     async function processPayPalPayout(email, amountInINR) {
-      const resultEl = document.getElementById('withdrawResult');
-      
       try {
-        // Call your Render backend - UPDATED URL
+        console.log('Sending payout request to backend...');
+        
         const response = await fetch('https://watchadsearnpaypal.onrender.com/api/payout', {
           method: 'POST',
           headers: {
@@ -414,22 +272,22 @@
         });
 
         const data = await response.json();
+        console.log('Backend response:', data);
         
-        if (data.success) {
-          return { success: true, data: data };
-        } else {
-          return { success: false, error: data.message || 'Payout failed' };
-        }
+        return data;
       } catch (error) {
         console.error('PayPal Payout Error:', error);
-        return { success: false, error: 'Network error processing payout' };
+        return { 
+          success: false, 
+          error: 'Network error: ' + error.message 
+        };
       }
     }
 
-    // Coin to INR conversion rate (25,000 coins = ₹20)
+    // Coin to INR conversion rate
     const COIN_TO_INR_RATE = 20 / 25000;
 
-    // --- Updated Withdrawal Logic ---
+    // --- UPDATED WITHDRAWAL LOGIC WITH BETTER ERROR HANDLING ---
     document.getElementById('requestWithdrawal').onclick = async ()=>{
       const coinAmount = Number(document.getElementById('coinAmount').value || 0);
       const paypalEmail = document.getElementById('paypalEmail').value.trim();
@@ -455,7 +313,6 @@
         return; 
       }
 
-      // Basic email validation
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if(!emailRegex.test(paypalEmail)) {
         resultEl.textContent='Please enter a valid email address.'; 
@@ -463,38 +320,40 @@
         return;
       }
 
-      resultEl.textContent='Processing PayPal withdrawal...';
+      loadingOverlay.style.display = 'flex';
+      resultEl.textContent = 'Processing PayPal withdrawal...';
       resultEl.style.color = 'yellow';
 
       try {
-        // Convert coins to INR
         const amountInINR = coinAmount * COIN_TO_INR_RATE;
+        console.log(`Processing withdrawal: ${coinAmount} coins = ₹${amountInINR} to ${paypalEmail}`);
         
-        // Process PayPal payout
         const payoutResult = await processPayPalPayout(paypalEmail, amountInINR);
         
+        loadingOverlay.style.display = 'none';
+        
         if (payoutResult.success) {
-          // Deduct coins from balance
           coins -= coinAmount;
           updateBalanceDisplay();
           resultEl.textContent = `✅ Withdrawal successful! ₹${amountInINR.toFixed(2)} sent to ${paypalEmail}`;
           resultEl.style.color = 'lightgreen';
           
-          // Clear form
           document.getElementById('coinAmount').value = '';
           document.getElementById('paypalEmail').value = '';
         } else {
-          resultEl.textContent = `❌ Error: ${payoutResult.error}`;
+          resultEl.textContent = `❌ Withdrawal failed: ${payoutResult.error || payoutResult.message || 'Unknown error'}`;
           resultEl.style.color = 'red';
+          console.error('Withdrawal failed:', payoutResult);
         }
       } catch(err) { 
-        console.error('Withdrawal Error:', err); 
-        resultEl.textContent = '❌ Network error processing withdrawal.'; 
+        loadingOverlay.style.display = 'none';
+        console.error('Withdrawal Error:', err);
+        resultEl.textContent = '❌ Network error processing withdrawal. Check console for details.'; 
         resultEl.style.color = 'red';
       }
     };
 
-    // Auto-calculate INR amount when coins are entered
+    // Auto-calculate INR amount
     document.getElementById('coinAmount').addEventListener('input', function() {
       const coinAmount = Number(this.value || 0);
       const amountInINR = coinAmount * COIN_TO_INR_RATE;
@@ -504,6 +363,17 @@
         button.textContent = `Request ₹${amountInINR.toFixed(2)} PayPal Withdrawal`;
       } else {
         button.textContent = 'Request PayPal Withdrawal';
+      }
+    });
+
+    // Test backend connection on load
+    window.addEventListener('load', async () => {
+      try {
+        const response = await fetch('https://watchadsearnpaypal.onrender.com');
+        const data = await response.json();
+        console.log('Backend connection test:', data);
+      } catch (error) {
+        console.error('Backend connection failed:', error);
       }
     });
   </script>
