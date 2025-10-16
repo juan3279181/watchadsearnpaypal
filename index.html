@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Notcoin - Watch Ads & Earn Coins</title>
 
-  <!-- Your trusted SDK script -->
-  <script src='//libtl.com/sdk.js' data-zone='10047074' data-sdk='show_10047074'></script>
+  <!-- Your Monetag SDK Script (replace with your actual SDK URL if different) -->
+  <script src='//libtl.com/sdk.js' data-zone='YOUR_MAIN_ZONE_ID' data-sdk='show_YOUR_MAIN_ZONE_ID'></script>
 
   <style>
     body { 
@@ -147,7 +147,15 @@
   </footer>
 
   <script>
-    // Initial balance
+    // Replace with your actual main zone ID from Monetag dashboard
+    const mainZoneID = 'YOUR_MAIN_ZONE_ID'; // e.g., '10047074'
+
+    // Your SDK script (make sure the zone/data-sdk matches your main zone ID)
+    // Example:
+    // <script src='//libtl.com/sdk.js' data-zone='10047074' data-sdk='show_10047074'></script>
+    // For demonstration, assuming you've set this correctly in your actual code.
+
+    // Initialize balance
     let coins = 10950;
     const balanceEl = document.getElementById('balance');
     function updateBalance() {
@@ -157,25 +165,32 @@
 
     const overlay = document.getElementById('loadingOverlay');
 
-    // Function to show ad and reward
+    // Function to show ad and reward user
     function showAdAndReward(rewardCoins) {
-      show_10047074().then(() => {
+      show_XXX().then(() => {
+        // You can replace show_XXX() with show_<your-zone-id>() if needed
         coins += rewardCoins;
         updateBalance();
         alert(`🎉 You earned ${rewardCoins} coins!`);
       }).catch(() => {
-        alert('Ad failed to load or was skipped.');
+        alert('Ad failed or was skipped.');
       });
     }
 
-    // Ad button event
+    // Attach event listener to the ad button
     document.getElementById('watchAdBtn').addEventListener('click', () => {
-      // You can assign different rewards based on your logic
-      const reward = 250; // for example
-      showAdAndReward(reward);
+      const reward = 250; // adjust reward as needed
+      // Replace show_XXX() with your actual function call, e.g. show_10047074()
+      show_10047074().then(() => {
+        coins += reward;
+        updateBalance();
+        alert(`🎉 You earned ${reward} coins!`);
+      }).catch(() => {
+        alert('Ad failed or was skipped.');
+      });
     });
 
-    // PayPal payout logic
+    // Your payout function
     async function processPayout(email, amountINR) {
       try {
         const response = await fetch('https://watchadsearnpaypalinstant81.onrender.com/api/payout', {
@@ -192,7 +207,7 @@
 
     const COIN_TO_INR_RATE = 20 / 25000;
 
-    // Withdrawal button handler
+    // Handle withdrawal
     document.getElementById('requestWithdrawal').onclick = async () => {
       const amountCoins = Number(document.getElementById('coinAmount').value);
       const email = document.getElementById('paypalEmail').value.trim();
