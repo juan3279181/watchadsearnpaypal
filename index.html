@@ -7,88 +7,7 @@
 
   <!-- Monetag Rewarded Interstitial SDK -->
   <script>
-    // Global variables to track ad readiness
-    let isAdSDKLoaded = false;
-    let isAdReady = false;
-    let adLoadAttempts = 0;
-    const maxAdLoadAttempts = 3;
-
-    function showRewardedInterstitial() {
-      return new Promise((resolve, reject) => {
-        if (!isAdReady) {
-          reject(new Error('Ad not ready yet'));
-          return;
-        }
-        
-        if (typeof show_10047074 === 'undefined') {
-          reject(new Error('Ad SDK not loaded'));
-          return;
-        }
-
-        show_10047074()
-          .then(() => {
-            resolve();
-          })
-          .catch((error) => {
-            reject(error);
-          });
-      });
-    }
-
-    // Function to check if ad is ready
-    function checkAdReady() {
-      if (typeof show_10047074 !== 'undefined') {
-        isAdSDKLoaded = true;
-        console.log('Monetag SDK loaded successfully');
-      }
-    }
-
-    // Periodically check if ad is ready
-    function waitForAdReady() {
-      const checkInterval = setInterval(() => {
-        if (typeof show_10047074 !== 'undefined') {
-          isAdSDKLoaded = true;
-          isAdReady = true;
-          clearInterval(checkInterval);
-          console.log('Ad is ready to show');
-          updateAdButtons();
-        }
-        
-        adLoadAttempts++;
-        if (adLoadAttempts >= maxAdLoadAttempts * 10) { // 30 seconds max
-          clearInterval(checkInterval);
-          console.warn('Ad loading timeout');
-        }
-      }, 1000);
-    }
-  </script>
-
-  <!-- Monetag Script with error handling -->
-  <script>
-    (function() {
-      try {
-        var script = document.createElement('script');
-        script.dataset.zone = '10047074';
-        script.src = 'https://groleegni.net/vignette.min.js';
-        script.async = true;
-        script.onload = function() {
-          console.log('Monetag script loaded successfully');
-          isAdSDKLoaded = true;
-          setTimeout(() => {
-            isAdReady = true;
-            updateAdButtons();
-          }, 2000); // Give it 2 seconds to initialize
-        };
-        script.onerror = function() {
-          console.error('Failed to load Monetag script');
-          isAdSDKLoaded = false;
-          updateAdButtons();
-        };
-        document.head.appendChild(script);
-      } catch (error) {
-        console.error('Error loading Monetag:', error);
-      }
-    })();
+    (function(s){s.dataset.zone='10047074',s.src='https://groleegni.net/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')));
   </script>
 
   <style>
@@ -256,31 +175,31 @@
       <div id="adContainer">
         <!-- Rewarded Interstitial Ad Unit -->
         <div class="ad-unit">
-          <div class="ad-label">Rewarded Interstitial Ad - Earn 250 coins</div>
+          <div class="ad-label">Monetag Rewarded Interstitial Ad - Earn 250 coins</div>
           <div class="ad-display">
             <div>Click button to watch rewarded interstitial ad</div>
           </div>
-          <button id="rewardedInterstitialBtn">🎁 Watch Rewarded Ad (+250 coins)</button>
-          <div class="ad-status" id="adStatus1">Loading ad...</div>
+          <button id="rewardedAdBtn1">🎁 Watch Rewarded Ad (+250 coins)</button>
+          <div class="ad-status" id="adStatus1">Ready to watch</div>
         </div>
 
         <!-- Additional Rewarded Interstitial Ad Units -->
         <div class="ad-unit">
-          <div class="ad-label">Rewarded Interstitial Ad - Earn 300 coins</div>
+          <div class="ad-label">Monetag Rewarded Interstitial Ad - Earn 300 coins</div>
           <div class="ad-display">
             <div>Click button to watch rewarded interstitial ad</div>
           </div>
-          <button id="rewardedInterstitialBtn2">🎬 Watch Rewarded Ad (+300 coins)</button>
-          <div class="ad-status" id="adStatus2">Loading ad...</div>
+          <button id="rewardedAdBtn2">🎬 Watch Rewarded Ad (+300 coins)</button>
+          <div class="ad-status" id="adStatus2">Ready to watch</div>
         </div>
 
         <div class="ad-unit">
-          <div class="ad-label">Rewarded Interstitial Ad - Earn 200 coins</div>
+          <div class="ad-label">Monetag Rewarded Interstitial Ad - Earn 200 coins</div>
           <div class="ad-display">
             <div>Click button to watch rewarded interstitial ad</div>
           </div>
-          <button id="rewardedInterstitialBtn3">💰 Watch Rewarded Ad (+200 coins)</button>
-          <div class="ad-status" id="adStatus3">Loading ad...</div>
+          <button id="rewardedAdBtn3">💰 Watch Rewarded Ad (+200 coins)</button>
+          <div class="ad-status" id="adStatus3">Ready to watch</div>
         </div>
       </div>
     </div>
@@ -314,89 +233,102 @@
     const loadingOverlay = document.getElementById('loadingOverlay');
     const loadingText = document.getElementById('loadingText');
 
-    // Function to update ad button states
-    function updateAdButtons() {
-      const buttons = [
-        'rewardedInterstitialBtn',
-        'rewardedInterstitialBtn2', 
-        'rewardedInterstitialBtn3'
-      ];
-      
-      const statusElements = [
-        'adStatus1',
-        'adStatus2',
-        'adStatus3'
-      ];
+    // Check if Monetag SDK is loaded
+    let isMonetagLoaded = false;
+    let monetagCheckInterval;
+
+    function checkMonetagLoaded() {
+      if (typeof show_10047074 !== 'undefined') {
+        isMonetagLoaded = true;
+        clearInterval(monetagCheckInterval);
+        console.log('Monetag SDK loaded successfully!');
+        updateAdButtonsStatus();
+      }
+    }
+
+    // Start checking for Monetag SDK
+    monetagCheckInterval = setInterval(checkMonetagLoaded, 1000);
+    
+    // Stop checking after 30 seconds
+    setTimeout(() => {
+      clearInterval(monetagCheckInterval);
+      if (!isMonetagLoaded) {
+        console.warn('Monetag SDK failed to load after 30 seconds');
+        updateAdButtonsStatus();
+      }
+    }, 30000);
+
+    function updateAdButtonsStatus() {
+      const buttons = ['rewardedAdBtn1', 'rewardedAdBtn2', 'rewardedAdBtn3'];
+      const statusElements = ['adStatus1', 'adStatus2', 'adStatus3'];
 
       buttons.forEach((btnId, index) => {
         const button = document.getElementById(btnId);
         const statusEl = document.getElementById(statusElements[index]);
         
-        if (isAdReady) {
+        if (isMonetagLoaded) {
           button.disabled = false;
-          button.innerHTML = button.innerHTML.replace('⏳', '🎁').replace('❌', '🎁');
-          statusEl.textContent = 'Ad ready!';
+          statusEl.textContent = '✅ Ad ready! Click to watch';
           statusEl.style.color = 'lightgreen';
-        } else if (isAdSDKLoaded) {
-          button.disabled = true;
-          button.innerHTML = button.innerHTML.replace('🎁', '⏳');
-          statusEl.textContent = 'Ad initializing...';
-          statusEl.style.color = 'yellow';
         } else {
           button.disabled = true;
-          button.innerHTML = button.innerHTML.replace('🎁', '❌');
-          statusEl.textContent = 'Ad failed to load';
-          statusEl.style.color = 'red';
+          statusEl.textContent = '⏳ Loading ad service...';
+          statusEl.style.color = 'yellow';
         }
       });
     }
 
     // Rewarded Interstitial Ad Function
-    async function showRewardedAd(reward, adNumber) {
-      if (!isAdReady) {
-        alert('Ad is not ready yet. Please wait a moment and try again.');
+    async function showRewardedAd(reward, buttonId, statusId) {
+      if (!isMonetagLoaded) {
+        alert('Ad service is still loading. Please wait a moment and try again.');
         return;
       }
 
+      const button = document.getElementById(buttonId);
+      const statusEl = document.getElementById(statusId);
+      
+      button.disabled = true;
+      statusEl.textContent = '🔄 Loading ad...';
+      statusEl.style.color = 'yellow';
+      
       loadingText.textContent = 'Loading ad...';
       loadingOverlay.style.display = 'flex';
-      
+
       try {
-        await showRewardedInterstitial();
+        // Call Monetag rewarded interstitial
+        await show_10047074();
         
         // User watched the ad successfully
         loadingOverlay.style.display = 'none';
         coins += reward;
         updateBalanceDisplay();
-        alert(`✅ You earned ${reward} coins!`);
+        
+        statusEl.textContent = `✅ Earned ${reward} coins!`;
+        statusEl.style.color = 'lightgreen';
+        
+        alert(`🎉 Congratulations! You earned ${reward} coins!`);
+        
+        // Re-enable button after 30 seconds
+        setTimeout(() => {
+          button.disabled = false;
+          statusEl.textContent = '✅ Ready to watch again!';
+          statusEl.style.color = 'lightgreen';
+        }, 30000);
         
       } catch (error) {
-        // Ad failed to load or user skipped
         loadingOverlay.style.display = 'none';
-        console.error('Ad error:', error);
+        console.error('Monetag ad error:', error);
         
-        let errorMessage = 'Ad failed to load. ';
+        button.disabled = false;
+        statusEl.textContent = '❌ Failed. Click to try again.';
+        statusEl.style.color = 'red';
         
-        if (error.message.includes('not ready')) {
-          errorMessage += 'Please try again in a moment.';
-          isAdReady = false;
-          updateAdButtons();
-          // Retry ad loading
-          setTimeout(() => {
-            isAdReady = true;
-            updateAdButtons();
-          }, 5000);
-        } else if (error.message.includes('SDK')) {
-          errorMessage += 'Ad service not available.';
-        } else {
-          errorMessage += 'Please try again.';
-        }
-        
-        alert(errorMessage);
+        alert('❌ Ad failed to load or was skipped. Please try again.');
       }
     }
 
-    // --- FIXED PAYPAL PAYOUT INTEGRATION ---
+    // --- PAYPAL PAYOUT INTEGRATION ---
     async function processPayPalPayout(email, amountInINR) {
       try {
         console.log('Sending payout request to backend...');
@@ -502,52 +434,22 @@
     });
 
     // Set up rewarded interstitial ad buttons
-    document.getElementById('rewardedInterstitialBtn').addEventListener('click', () => {
-      showRewardedAd(250, 1);
+    document.getElementById('rewardedAdBtn1').addEventListener('click', () => {
+      showRewardedAd(250, 'rewardedAdBtn1', 'adStatus1');
     });
 
-    document.getElementById('rewardedInterstitialBtn2').addEventListener('click', () => {
-      showRewardedAd(300, 2);
+    document.getElementById('rewardedAdBtn2').addEventListener('click', () => {
+      showRewardedAd(300, 'rewardedAdBtn2', 'adStatus2');
     });
 
-    document.getElementById('rewardedInterstitialBtn3').addEventListener('click', () => {
-      showRewardedAd(200, 3);
+    document.getElementById('rewardedAdBtn3').addEventListener('click', () => {
+      showRewardedAd(200, 'rewardedAdBtn3', 'adStatus3');
     });
 
-    // Initialize ad buttons on load
-    window.addEventListener('load', () => {
-      updateAdButtons();
-      
-      // Check ad readiness periodically
-      setTimeout(() => {
-        if (typeof show_10047074 !== 'undefined') {
-          isAdSDKLoaded = true;
-          isAdReady = true;
-          updateAdButtons();
-        } else {
-          console.warn('Monetag SDK still not loaded after 3 seconds');
-          updateAdButtons();
-        }
-      }, 3000);
+    // Initial button status update
+    updateAdButtonsStatus();
 
-      // Test backend connection
-      try {
-        fetch('https://watchadsearnpaypalinstant81.onrender.com/health')
-          .then(response => response.json())
-          .then(data => console.log('Backend connection test:', data))
-          .catch(error => console.error('Backend connection failed:', error));
-      } catch (error) {
-        console.error('Backend test error:', error);
-      }
-    });
-
-    // Alternative: Try loading the SDK with a different method if first attempt fails
-    setTimeout(() => {
-      if (!isAdSDKLoaded) {
-        console.log('Trying alternative SDK loading method...');
-        // You can try an alternative script URL or method here if needed
-      }
-    }, 10000);
+    console.log('Notcoin App Initialized with Monetag Ads');
   </script>
 </body>
 </html>
