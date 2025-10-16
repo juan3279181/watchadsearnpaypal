@@ -5,27 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Notcoin - Watch Ads & Earn Coins</title>
 
-  <!-- Corrected One-Click Tag Script for Monetag -->
+  <!-- Monetag Rewarded Interstitial SDK -->
   <script>
-  (function() {
-    var s = document.createElement('script');
-    s.dataset.zone = '10046811';
-    s.src = 'https://al5sm.com/tag.min.js';
-    document.head.appendChild(s);
-  })();
+    function showRewardedInterstitial() {
+      return new Promise((resolve, reject) => {
+        show_10047074().then(() => {
+          resolve();
+        }).catch((error) => {
+          reject(error);
+        });
+      });
+    }
   </script>
-
-  <!-- Monetag Interstitial Ads Script -->
-  <script>(function(s){s.dataset.zone='10039693',s.src='https://groleegni.net/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
-
-  <!-- Monetag Banner Ads Script -->
-  <script type="text/javascript">
-    (function() {
-      var script = document.createElement('script');
-      script.src = "//s.monetag.com/loader.js";
-      script.async = true;
-      document.head.appendChild(script);
-    })();
+  <script>
+    (function(s){s.dataset.zone='10047074',s.src='https://groleegni.net/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')));
   </script>
 
   <style>
@@ -185,31 +178,30 @@
       <p>Click buttons below to watch ads and earn rewards</p>
       
       <div id="adContainer">
-        <!-- Monetag Interstitial Ad Unit -->
+        <!-- Rewarded Interstitial Ad Unit -->
         <div class="ad-unit">
-          <div class="ad-label">Monetag Interstitial Ad - Earn 250 coins</div>
+          <div class="ad-label">Rewarded Interstitial Ad - Earn 250 coins</div>
           <div class="ad-display">
-            <div>Click button to show full-screen interstitial ad</div>
+            <div>Click button to watch rewarded interstitial ad</div>
           </div>
-          <button>📱 Watch Interstitial Ad (+250 coins)</button>
+          <button id="rewardedInterstitialBtn">🎁 Watch Rewarded Ad (+250 coins)</button>
         </div>
 
-        <!-- Monetag Banner Ad Unit -->
+        <!-- Additional Rewarded Interstitial Ad Units -->
         <div class="ad-unit">
-          <div class="ad-label">Monetag Banner Ad - Earn 150 coins</div>
-          <div class="ad-display" id="monetag-banner">
-            <div>Monetag Banner Loading...</div>
+          <div class="ad-label">Rewarded Interstitial Ad - Earn 300 coins</div>
+          <div class="ad-display">
+            <div>Click button to watch rewarded interstitial ad</div>
           </div>
-          <button>🖼️ Watch Banner Ad (+150 coins)</button>
+          <button id="rewardedInterstitialBtn2">🎬 Watch Rewarded Ad (+300 coins)</button>
         </div>
 
-        <!-- Additional Monetag Ad Unit -->
         <div class="ad-unit">
-          <div class="ad-label">Monetag Video Ad - Earn 300 coins</div>
+          <div class="ad-label">Rewarded Interstitial Ad - Earn 200 coins</div>
           <div class="ad-display">
-            <div>Click to watch video advertisement</div>
+            <div>Click button to watch rewarded interstitial ad</div>
           </div>
-          <button>🎬 Watch Video Ad (+300 coins)</button>
+          <button id="rewardedInterstitialBtn3">💰 Watch Rewarded Ad (+200 coins)</button>
         </div>
       </div>
     </div>
@@ -242,25 +234,26 @@
 
     const loadingOverlay = document.getElementById('loadingOverlay');
 
-    // Ad functions (your existing code)
-    function showMonetagInterstitial(reward) {
+    // Rewarded Interstitial Ad Function
+    async function showRewardedAd(reward) {
       loadingOverlay.style.display = 'flex';
-      setTimeout(() => {
+      loadingOverlay.querySelector('div:last-child').textContent = 'Loading ad...';
+      
+      try {
+        await showRewardedInterstitial();
+        
+        // User watched the ad successfully
         loadingOverlay.style.display = 'none';
         coins += reward;
         updateBalanceDisplay();
         alert(`✅ You earned ${reward} coins!`);
-      }, 1500);
-    }
-
-    function showAd(reward, adNetwork) {
-      loadingOverlay.style.display = 'flex';
-      setTimeout(() => {
+        
+      } catch (error) {
+        // Ad failed to load or user skipped
         loadingOverlay.style.display = 'none';
-        coins += reward;
-        updateBalanceDisplay();
-        alert(`✅ You earned ${reward} coins from ${adNetwork} ad!`);
-      }, 1500);
+        console.error('Ad error:', error);
+        alert('❌ Ad failed to load or was skipped. Please try again.');
+      }
     }
 
     // --- FIXED PAYPAL PAYOUT INTEGRATION ---
@@ -378,21 +371,27 @@
       }
     });
 
-    // Add a global handler for all ad buttons
-    document.querySelectorAll('#adContainer button').forEach(btn => {
-      btn.addEventListener('click', () => {
-        // Detect reward based on button text
-        let reward = 0;
-        const text = btn.innerText;
-        if (text.includes('+250')) reward = 250;
-        else if (text.includes('+150')) reward = 150;
-        else if (text.includes('+300')) reward = 300;
-        else if (text.includes('+')) {
-          const match = text.match(/\+(\d+)/);
-          if (match) reward = parseInt(match[1]);
-        }
-        showAd(reward, 'realAd');
-      });
+    // Set up rewarded interstitial ad buttons
+    document.getElementById('rewardedInterstitialBtn').addEventListener('click', () => {
+      showRewardedAd(250);
+    });
+
+    document.getElementById('rewardedInterstitialBtn2').addEventListener('click', () => {
+      showRewardedAd(300);
+    });
+
+    document.getElementById('rewardedInterstitialBtn3').addEventListener('click', () => {
+      showRewardedAd(200);
+    });
+
+    // Check if the rewarded interstitial function is available
+    window.addEventListener('load', () => {
+      if (typeof show_10047074 === 'undefined') {
+        console.warn('Monetag Rewarded Interstitial SDK not loaded yet');
+        // You might want to show a retry button or disable ad buttons temporarily
+      } else {
+        console.log('Monetag Rewarded Interstitial SDK loaded successfully');
+      }
     });
   </script>
 </body>
