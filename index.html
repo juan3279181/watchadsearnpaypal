@@ -1,165 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Notcoin - Watch Ads & Earn Coins</title>
-
-  <!-- Monetag Rewarded Interstitial SDK -->
-  <script>
-    (function(s){s.dataset.zone='10047074',s.src='https://groleegni.net/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')));
-  </script>
-
   <style>
-    body { 
-      font-family: Arial, sans-serif; 
-      background: #111; 
-      color: #fff; 
-      margin: 0; 
-      padding: 0; 
-      overflow-x: hidden;
-    }
-    header, footer { 
-      background: #000; 
-      padding: 1em; 
-      text-align: center; 
-    }
-    .container { 
-      width: 95%; 
-      max-width: 600px; 
-      margin: 0 auto; 
-      padding: 10px; 
-    }
-    .card { 
-      background: #1e1e1e; 
-      border-radius: 12px; 
-      padding: 20px; 
-      margin-bottom: 15px; 
-      text-align: center; 
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3); 
-    }
-    h1, h2, h3, p { 
-      margin: 5px 0; 
-    }
-    button { 
-      background: orange; 
-      color: black; 
-      border: none; 
-      border-radius: 8px; 
-      padding: 12px 25px; 
-      cursor: pointer; 
-      font-weight: bold; 
-      margin: 5px; 
-      transition: transform 0.1s; 
-    }
-    button:disabled { 
-      opacity: 0.6; 
-      cursor: not-allowed; 
-    }
-    button:hover:not(:disabled) { 
-      transform: scale(1.05); 
-    }
-    button:active:not(:disabled) { 
-      transform: scale(0.97); 
-    }
-    input { 
-      border-radius: 8px; 
-      border: none; 
-      padding: 10px; 
-      width: 90%; 
-      max-width: 400px; 
-      margin: 5px 0; 
-    }
-    #adContainer { 
-      width: 100%; 
-      margin: 15px auto; 
-      text-align: center; 
-    }
-    #withdrawResult { 
-      margin-top: 10px;
-      color: #ddd; 
-    }
-
-    /* Loading Overlay */
-    #loadingOverlay { 
-      display: none; 
-      position: fixed; 
-      top: 0; 
-      left: 0; 
-      width: 100%; 
-      height: 100%; 
-      background: rgba(0,0,0,0.9); 
-      color: #fff; 
-      font-size: 24px; 
-      justify-content: center; 
-      align-items: center; 
-      z-index: 9999; 
-      flex-direction: column;
-    }
-    
-    .spinner {
-      border: 5px solid rgba(255, 165, 0, 0.3);
-      border-radius: 50%;
-      border-top: 5px solid orange;
-      width: 50px;
-      height: 50px;
-      animation: spin 1s linear infinite;
-      margin-bottom: 20px;
-    }
-    
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    /* Ad Unit Styling */
-    .ad-unit {
-      background: #2a2a2a;
-      padding: 20px;
-      border-radius: 10px;
-      margin: 15px 0;
-      border: 1px solid #444;
-    }
-    .ad-label {
-      color: #aaa;
-      font-size: 12px;
-      margin-bottom: 10px;
-    }
-    
-    .ad-status {
-      color: #ffa500;
-      font-size: 12px;
-      margin-top: 5px;
-    }
-    
-    /* Ad Display Areas */
-    .ad-display {
-      min-height: 100px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 10px 0;
-      background: #333;
-      border-radius: 8px;
-    }
-
-    @media(max-width: 480px){ 
-      button, input {
-        width: 100%;
-      } 
-    }
+    body{font-family:Arial, sans-serif;background:#111;color:#fff;margin:0}
+    header,footer{background:#000;padding:1em;text-align:center}
+    .container{width:95%;max-width:600px;margin:0 auto;padding:10px}
+    .card{background:#1e1e1e;border-radius:12px;padding:20px;margin-bottom:15px;text-align:center}
+    button{background:orange;color:#000;border:none;border-radius:8px;padding:12px 25px;cursor:pointer}
+    button:disabled{opacity:.6;cursor:not-allowed}
+    #loadingOverlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column}
+    .spinner{border:5px solid rgba(255,165,0,.3);border-top:5px solid orange;border-radius:50%;width:50px;height:50px;animation:spin 1s linear infinite;margin-bottom:12px}
+    @keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
+    .ad-status{font-size:13px;margin-top:6px;color:#ffa500}
   </style>
-</head>
 
+  <!-- ✅ Monetag SDK Script -->
+  <script src="//libtl.com/sdk.js" data-zone="10047074" data-sdk="show_10047074"></script>
+</head>
 <body>
-  <header>
-    <h1>Notcoin</h1>
-    <p>Watch Ads & Earn Coins</p>
-  </header>
+  <header><h1>Notcoin</h1><p>Watch Ads & Earn Coins</p></header>
 
   <div id="loadingOverlay">
     <div class="spinner"></div>
-    <div id="loadingText">Loading Ad...</div>
+    <div id="loadingText">Loading...</div>
   </div>
 
   <div class="container">
@@ -170,286 +36,126 @@
 
     <div class="card">
       <h3>Watch Ads & Earn Coins</h3>
-      <p>Click buttons below to watch ads and earn rewards</p>
-      
-      <div id="adContainer">
-        <!-- Rewarded Interstitial Ad Unit -->
-        <div class="ad-unit">
-          <div class="ad-label">Monetag Rewarded Interstitial Ad - Earn 250 coins</div>
-          <div class="ad-display">
-            <div>Click button to watch rewarded interstitial ad</div>
-          </div>
-          <button id="rewardedAdBtn1">🎁 Watch Rewarded Ad (+250 coins)</button>
-          <div class="ad-status" id="adStatus1">Ready to watch</div>
-        </div>
+      <p>Click a button to watch an ad and earn coins.</p>
 
-        <!-- Additional Rewarded Interstitial Ad Units -->
-        <div class="ad-unit">
-          <div class="ad-label">Monetag Rewarded Interstitial Ad - Earn 300 coins</div>
-          <div class="ad-display">
-            <div>Click button to watch rewarded interstitial ad</div>
-          </div>
-          <button id="rewardedAdBtn2">🎬 Watch Rewarded Ad (+300 coins)</button>
-          <div class="ad-status" id="adStatus2">Ready to watch</div>
-        </div>
+      <div class="ad-unit">
+        <div class="ad-label">Monetag Rewarded Ad - +250</div>
+        <button id="rewardedAdBtn1">🎁 Watch Rewarded Ad (+250)</button>
+        <div class="ad-status" id="adStatus1">⏳ Loading ad service...</div>
+      </div>
 
-        <div class="ad-unit">
-          <div class="ad-label">Monetag Rewarded Interstitial Ad - Earn 200 coins</div>
-          <div class="ad-display">
-            <div>Click button to watch rewarded interstitial ad</div>
-          </div>
-          <button id="rewardedAdBtn3">💰 Watch Rewarded Ad (+200 coins)</button>
-          <div class="ad-status" id="adStatus3">Ready to watch</div>
-        </div>
+      <div class="ad-unit">
+        <div class="ad-label">Monetag Rewarded Ad - +300</div>
+        <button id="rewardedAdBtn2">🎬 Watch Rewarded Ad (+300)</button>
+        <div class="ad-status" id="adStatus2">⏳ Loading ad service...</div>
+      </div>
+
+      <div class="ad-unit">
+        <div class="ad-label">Monetag Rewarded Ad - +200</div>
+        <button id="rewardedAdBtn3">💰 Watch Rewarded Ad (+200)</button>
+        <div class="ad-status" id="adStatus3">⏳ Loading ad service...</div>
       </div>
     </div>
 
     <div class="card">
       <h3>Withdraw Earnings</h3>
       <p>Minimum withdrawal: 25,000 Coins = ₹20</p>
-      <div>
-        <input type="number" id="coinAmount" placeholder="Enter Coin Amount"/>
-        <input type="email" id="paypalEmail" placeholder="Enter PayPal Email"/>
-        <button id="requestWithdrawal">Request PayPal Withdrawal</button>
-        <div id="withdrawResult"></div>
-      </div>
+      <input type="number" id="coinAmount" placeholder="Enter Coin Amount"/>
+      <input type="email" id="paypalEmail" placeholder="Enter PayPal Email"/>
+      <button id="requestWithdrawal">Request PayPal Withdrawal</button>
+      <div id="withdrawResult"></div>
     </div>
   </div>
 
-  <footer>
-    <p>© 2025 Notcoin — Earn rewards by watching ads</p>
-  </footer>
+  <footer><p>© 2025 Notcoin — Earn rewards by watching ads</p></footer>
 
   <script>
-    // Initialize coins
     let coins = 10950;
-    const balanceEl = document.getElementById('balance');
-    balanceEl.innerText = coins + ' Coins';
+    const balanceEl = document.getElementById("balance");
+    function updateBalance(){ balanceEl.innerText = coins + " Coins"; }
+    updateBalance();
 
-    function updateBalanceDisplay() { 
-      balanceEl.innerText = coins + ' Coins'; 
-    }
+    const buttons = [
+      {btnId:'rewardedAdBtn1',statusId:'adStatus1',reward:250},
+      {btnId:'rewardedAdBtn2',statusId:'adStatus2',reward:300},
+      {btnId:'rewardedAdBtn3',statusId:'adStatus3',reward:200}
+    ];
 
-    const loadingOverlay = document.getElementById('loadingOverlay');
-    const loadingText = document.getElementById('loadingText');
+    const loadingOverlay = document.getElementById("loadingOverlay");
+    const loadingText = document.getElementById("loadingText");
 
-    // Check if Monetag SDK is loaded
-    let isMonetagLoaded = false;
-    let monetagCheckInterval;
-
-    function checkMonetagLoaded() {
-      if (typeof show_10047074 !== 'undefined') {
-        isMonetagLoaded = true;
-        clearInterval(monetagCheckInterval);
-        console.log('Monetag SDK loaded successfully!');
-        updateAdButtonsStatus();
-      }
-    }
-
-    // Start checking for Monetag SDK
-    monetagCheckInterval = setInterval(checkMonetagLoaded, 1000);
-    
-    // Stop checking after 30 seconds
-    setTimeout(() => {
-      clearInterval(monetagCheckInterval);
-      if (!isMonetagLoaded) {
-        console.warn('Monetag SDK failed to load after 30 seconds');
-        updateAdButtonsStatus();
-      }
-    }, 30000);
-
-    function updateAdButtonsStatus() {
-      const buttons = ['rewardedAdBtn1', 'rewardedAdBtn2', 'rewardedAdBtn3'];
-      const statusElements = ['adStatus1', 'adStatus2', 'adStatus3'];
-
-      buttons.forEach((btnId, index) => {
-        const button = document.getElementById(btnId);
-        const statusEl = document.getElementById(statusElements[index]);
-        
-        if (isMonetagLoaded) {
-          button.disabled = false;
-          statusEl.textContent = '✅ Ad ready! Click to watch';
-          statusEl.style.color = 'lightgreen';
-        } else {
-          button.disabled = true;
-          statusEl.textContent = '⏳ Loading ad service...';
-          statusEl.style.color = 'yellow';
-        }
+    function setAllButtonsDisabled(disabled,msg){
+      buttons.forEach(b=>{
+        const btn=document.getElementById(b.btnId);
+        const st=document.getElementById(b.statusId);
+        btn.disabled=disabled;
+        if(msg) st.textContent=msg;
       });
     }
 
-    // Rewarded Interstitial Ad Function
-    async function showRewardedAd(reward, buttonId, statusId) {
-      if (!isMonetagLoaded) {
-        alert('Ad service is still loading. Please wait a moment and try again.');
-        return;
-      }
+    setAllButtonsDisabled(true,"⏳ Initializing ad service...");
 
-      const button = document.getElementById(buttonId);
-      const statusEl = document.getElementById(statusId);
-      
-      button.disabled = true;
-      statusEl.textContent = '🔄 Loading ad...';
-      statusEl.style.color = 'yellow';
-      
-      loadingText.textContent = 'Loading ad...';
-      loadingOverlay.style.display = 'flex';
-
-      try {
-        // Call Monetag rewarded interstitial
-        await show_10047074();
-        
-        // User watched the ad successfully
-        loadingOverlay.style.display = 'none';
-        coins += reward;
-        updateBalanceDisplay();
-        
-        statusEl.textContent = `✅ Earned ${reward} coins!`;
-        statusEl.style.color = 'lightgreen';
-        
-        alert(`🎉 Congratulations! You earned ${reward} coins!`);
-        
-        // Re-enable button after 30 seconds
-        setTimeout(() => {
-          button.disabled = false;
-          statusEl.textContent = '✅ Ready to watch again!';
-          statusEl.style.color = 'lightgreen';
-        }, 30000);
-        
-      } catch (error) {
-        loadingOverlay.style.display = 'none';
-        console.error('Monetag ad error:', error);
-        
-        button.disabled = false;
-        statusEl.textContent = '❌ Failed. Click to try again.';
-        statusEl.style.color = 'red';
-        
-        alert('❌ Ad failed to load or was skipped. Please try again.');
-      }
-    }
-
-    // --- PAYPAL PAYOUT INTEGRATION ---
-    async function processPayPalPayout(email, amountInINR) {
-      try {
-        console.log('Sending payout request to backend...');
-        const response = await fetch('https://watchadsearnpaypalinstant81.onrender.com/api/payout', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email: email,
-            amount: amountInINR,
-            currency: 'INR',
-            userId: 'user123'
-          })
-        });
-        const data = await response.json();
-        console.log('Backend response:', data);
-        return data;
-      } catch (error) {
-        console.error('PayPal Payout Error:', error);
-        return { 
-          success: false, 
-          error: 'Network error: ' + error.message 
+    // Wait until Monetag SDK is ready
+    function waitForSDKReady(timeout=10000){
+      return new Promise(resolve=>{
+        const start=Date.now();
+        const check=()=>{
+          if(typeof window.show_10047074==="function"){resolve(true);}
+          else if(Date.now()-start>timeout){resolve(false);}
+          else setTimeout(check,300);
         };
+        check();
+      });
+    }
+
+    async function initAds(){
+      const ready=await waitForSDKReady();
+      if(ready){
+        setAllButtonsDisabled(false,"✅ Ad ready! Click to watch");
+      }else{
+        setAllButtonsDisabled(false,"⚠️ SDK not ready — simulated ads only");
       }
     }
 
-    const COIN_TO_INR_RATE = 20 / 25000;
+    async function showRewardedAd(reward,btnId,statusId){
+      const btn=document.getElementById(btnId);
+      const st=document.getElementById(statusId);
+      btn.disabled=true;
+      st.textContent="🔄 Loading ad...";
+      loadingOverlay.style.display="flex";
 
-    // Withdrawal button handler
-    document.getElementById('requestWithdrawal').onclick = async ()=>{
-      const coinAmount = Number(document.getElementById('coinAmount').value || 0);
-      const paypalEmail = document.getElementById('paypalEmail').value.trim();
-      const resultEl = document.getElementById('withdrawResult'); 
-      
-      resultEl.textContent = '';
-      resultEl.style.color = '#ddd';
-
-      if(!coinAmount || coinAmount < 25000){ 
-        resultEl.textContent='Minimum withdrawal is 25,000 coins.'; 
-        resultEl.style.color = 'orange';
-        return; 
-      }
-      if(coinAmount > coins){ 
-        resultEl.textContent='Insufficient balance.'; 
-        resultEl.style.color = 'orange';
-        return; 
-      }
-      if(!paypalEmail){ 
-        resultEl.textContent='Enter your PayPal email address.'; 
-        resultEl.style.color = 'orange';
-        return; 
-      }
-
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if(!emailRegex.test(paypalEmail)) {
-        resultEl.textContent='Please enter a valid email address.'; 
-        resultEl.style.color = 'orange';
-        return;
-      }
-
-      loadingOverlay.style.display = 'flex';
-      loadingText.textContent = 'Processing PayPal withdrawal...';
-      resultEl.textContent = 'Processing PayPal withdrawal...';
-      resultEl.style.color = 'yellow';
-
-      try {
-        const amountInINR = coinAmount * COIN_TO_INR_RATE;
-        const payoutResult = await processPayPalPayout(paypalEmail, amountInINR);
-        loadingOverlay.style.display = 'none';
-
-        if (payoutResult.success) {
-          coins -= coinAmount;
-          updateBalanceDisplay();
-          resultEl.textContent = `✅ Withdrawal successful! ₹${amountInINR.toFixed(2)} sent to ${paypalEmail}`;
-          resultEl.style.color = 'lightgreen';
-
-          document.getElementById('coinAmount').value = '';
-          document.getElementById('paypalEmail').value = '';
-        } else {
-          resultEl.textContent = `❌ Withdrawal failed: ${payoutResult.error || payoutResult.message || 'Unknown error'}`;
-          resultEl.style.color = 'red';
-          console.error('Withdrawal failed:', payoutResult);
+      try{
+        if(typeof window.show_10047074==="function"){
+          const res=window.show_10047074();
+          if(res && typeof res.then==="function"){await res;}
+          else await new Promise(r=>setTimeout(r,2000));
+        }else{
+          await new Promise(r=>setTimeout(r,2000));
         }
-      } catch(err) { 
-        loadingOverlay.style.display = 'none';
-        console.error('Withdrawal Error:', err);
-        resultEl.textContent = '❌ Network error processing withdrawal. Check console for details.'; 
-        resultEl.style.color = 'red';
+
+        loadingOverlay.style.display="none";
+        coins+=reward;
+        updateBalance();
+        st.textContent=`✅ Earned ${reward} coins!`;
+        st.style.color="lightgreen";
+      }catch(e){
+        loadingOverlay.style.display="none";
+        st.textContent="❌ Ad failed. Try again.";
+        st.style.color="red";
+      }finally{
+        setTimeout(()=>{
+          btn.disabled=false;
+          st.textContent="Ready to watch again";
+          st.style.color="orange";
+        },30000);
       }
-    };
+    }
 
-    // Auto-calculate INR amount
-    document.getElementById('coinAmount').addEventListener('input', function() {
-      const coinAmount = Number(this.value || 0);
-      const amountInINR = coinAmount * COIN_TO_INR_RATE;
-      const button = document.getElementById('requestWithdrawal');
-      if (coinAmount >= 25000) {
-        button.textContent = `Request ₹${amountInINR.toFixed(2)} PayPal Withdrawal`;
-      } else {
-        button.textContent = 'Request PayPal Withdrawal';
-      }
-    });
+    document.getElementById('rewardedAdBtn1').addEventListener('click',()=>showRewardedAd(250,'rewardedAdBtn1','adStatus1'));
+    document.getElementById('rewardedAdBtn2').addEventListener('click',()=>showRewardedAd(300,'rewardedAdBtn2','adStatus2'));
+    document.getElementById('rewardedAdBtn3').addEventListener('click',()=>showRewardedAd(200,'rewardedAdBtn3','adStatus3'));
 
-    // Set up rewarded interstitial ad buttons
-    document.getElementById('rewardedAdBtn1').addEventListener('click', () => {
-      showRewardedAd(250, 'rewardedAdBtn1', 'adStatus1');
-    });
-
-    document.getElementById('rewardedAdBtn2').addEventListener('click', () => {
-      showRewardedAd(300, 'rewardedAdBtn2', 'adStatus2');
-    });
-
-    document.getElementById('rewardedAdBtn3').addEventListener('click', () => {
-      showRewardedAd(200, 'rewardedAdBtn3', 'adStatus3');
-    });
-
-    // Initial button status update
-    updateAdButtonsStatus();
-
-    console.log('Notcoin App Initialized with Monetag Ads');
+    initAds();
   </script>
 </body>
 </html>
