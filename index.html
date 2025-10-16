@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Notcoin - Watch Ads & Earn Coins</title>
   <style>
     body{font-family:Arial, sans-serif;background:#111;color:#fff;margin:0}
@@ -17,15 +17,15 @@
     .ad-status{font-size:13px;margin-top:6px;color:#ffa500}
   </style>
 
-  <!-- ✅ Monetag SDK Script -->
-  <script src="//libtl.com/sdk.js" data-zone="10047074" data-sdk="show_10047074"></script>
+  <!-- Monetag SDK: use HTTPS explicitly -->
+  <script src="https://libtl.com/sdk.js" data-zone="10047074" data-sdk="show_10047074"></script>
 </head>
 <body>
   <header><h1>Notcoin</h1><p>Watch Ads & Earn Coins</p></header>
 
   <div id="loadingOverlay">
     <div class="spinner"></div>
-    <div id="loadingText">Loading...</div>
+    <div id="loadingText">Loading ad service...</div>
   </div>
 
   <div class="container">
@@ -71,89 +71,99 @@
 
   <script>
     let coins = 10950;
-    const balanceEl = document.getElementById("balance");
-    function updateBalance(){ balanceEl.innerText = coins + " Coins"; }
+    const balanceEl = document.getElementById('balance');
+    function updateBalance() { balanceEl.innerText = coins + ' Coins'; }
     updateBalance();
 
     const buttons = [
-      {btnId:'rewardedAdBtn1',statusId:'adStatus1',reward:250},
-      {btnId:'rewardedAdBtn2',statusId:'adStatus2',reward:300},
-      {btnId:'rewardedAdBtn3',statusId:'adStatus3',reward:200}
+      {btnId:'rewardedAdBtn1', statusId:'adStatus1', reward:250},
+      {btnId:'rewardedAdBtn2', statusId:'adStatus2', reward:300},
+      {btnId:'rewardedAdBtn3', statusId:'adStatus3', reward:200}
     ];
 
-    const loadingOverlay = document.getElementById("loadingOverlay");
-    const loadingText = document.getElementById("loadingText");
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    const loadingText = document.getElementById('loadingText');
 
-    function setAllButtonsDisabled(disabled,msg){
-      buttons.forEach(b=>{
-        const btn=document.getElementById(b.btnId);
-        const st=document.getElementById(b.statusId);
-        btn.disabled=disabled;
-        if(msg) st.textContent=msg;
+    function setAllButtonsDisabled(disabled, message) {
+      buttons.forEach(b => {
+        const btn = document.getElementById(b.btnId);
+        const status = document.getElementById(b.statusId);
+        btn.disabled = disabled;
+        if (message) status.textContent = message;
       });
     }
 
-    setAllButtonsDisabled(true,"⏳ Initializing ad service...");
+    setAllButtonsDisabled(true, '⏳ Initializing ad service...');
 
-    // Wait until Monetag SDK is ready
-    function waitForSDKReady(timeout=10000){
-      return new Promise(resolve=>{
-        const start=Date.now();
-        const check=()=>{
-          if(typeof window.show_10047074==="function"){resolve(true);}
-          else if(Date.now()-start>timeout){resolve(false);}
-          else setTimeout(check,300);
-        };
+    function waitForSDK(timeoutMs = 10000) {
+      return new Promise(resolve => {
+        const start = Date.now();
+        function check() {
+          if (typeof window.show_10047074 === 'function') {
+            resolve(true);
+          } else if (Date.now() - start > timeoutMs) {
+            resolve(false);
+          } else {
+            setTimeout(check, 200);
+          }
+        }
         check();
       });
     }
 
-    async function initAds(){
-      const ready=await waitForSDKReady();
-      if(ready){
-        setAllButtonsDisabled(false,"✅ Ad ready! Click to watch");
-      }else{
-        setAllButtonsDisabled(false,"⚠️ SDK not ready — simulated ads only");
+    async function initAds() {
+      const ok = await waitForSDK(10000);
+      if (ok) {
+        setAllButtonsDisabled(false, '✅ Ad ready! Click to watch');
+      } else {
+        setAllButtonsDisabled(false, '⚠️ SDK failed to load (fallback mode)');
       }
     }
 
-    async function showRewardedAd(reward,btnId,statusId){
-      const btn=document.getElementById(btnId);
-      const st=document.getElementById(statusId);
-      btn.disabled=true;
-      st.textContent="🔄 Loading ad...";
-      loadingOverlay.style.display="flex";
+    async function showRewardedAd(reward, btnId, statusId) {
+      const btn = document.getElementById(btnId);
+      const st = document.getElementById(statusId);
+      btn.disabled = true;
+      st.textContent = '🔄 Loading ad...';
+      loadingOverlay.style.display = 'flex';
 
-      try{
-        if(typeof window.show_10047074==="function"){
-          const res=window.show_10047074();
-          if(res && typeof res.then==="function"){await res;}
-          else await new Promise(r=>setTimeout(r,2000));
-        }else{
-          await new Promise(r=>setTimeout(r,2000));
+      try {
+        if (typeof window.show_10047074 === 'function') {
+          const res = window.show_10047074();
+          if (res && typeof res.then === 'function') {
+            await res;
+          } else {
+            // fallback wait a bit
+            await new Promise(r => setTimeout(r, 2000));
+          }
+        } else {
+          // fallback simulated ad wait
+          await new Promise(r => setTimeout(r, 2000));
         }
 
-        loadingOverlay.style.display="none";
-        coins+=reward;
+        loadingOverlay.style.display = 'none';
+        coins += reward;
         updateBalance();
-        st.textContent=`✅ Earned ${reward} coins!`;
-        st.style.color="lightgreen";
-      }catch(e){
-        loadingOverlay.style.display="none";
-        st.textContent="❌ Ad failed. Try again.";
-        st.style.color="red";
-      }finally{
-        setTimeout(()=>{
-          btn.disabled=false;
-          st.textContent="Ready to watch again";
-          st.style.color="orange";
-        },30000);
+        st.textContent = `✅ Earned ${reward} coins!`;
+        st.style.color = 'lightgreen';
+      } catch (err) {
+        loadingOverlay.style.display = 'none';
+        console.error('Ad error:', err);
+        st.textContent = '❌ Ad failed. Try again.';
+        st.style.color = 'red';
+      } finally {
+        setTimeout(() => {
+          btn.disabled = false;
+          st.textContent = 'Ready to watch again';
+          st.style.color = 'orange';
+        }, 30000);
       }
     }
 
-    document.getElementById('rewardedAdBtn1').addEventListener('click',()=>showRewardedAd(250,'rewardedAdBtn1','adStatus1'));
-    document.getElementById('rewardedAdBtn2').addEventListener('click',()=>showRewardedAd(300,'rewardedAdBtn2','adStatus2'));
-    document.getElementById('rewardedAdBtn3').addEventListener('click',()=>showRewardedAd(200,'rewardedAdBtn3','adStatus3'));
+    buttons.forEach(b => {
+      document.getElementById(b.btnId)
+        .addEventListener('click', () => showRewardedAd(b.reward, b.btnId, b.statusId));
+    });
 
     initAds();
   </script>
