@@ -1,10 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script src='//libtl.com/sdk.js' data-zone='10047074' data-sdk='show_10047074'></script>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Notcoin - Watch Ads & Earn Coins</title>
+
+  <!-- Corrected One-Click Tag Script for Monetag -->
+  <script>
+  (function() {
+    var s = document.createElement('script');
+    s.dataset.zone = '10046811';
+    s.src = 'https://al5sm.com/tag.min.js';
+    document.head.appendChild(s);
+  })();
+  </script>
+
+  <!-- Monetag Interstitial Ads Script -->
+  <script>(function(s){s.dataset.zone='10039693',s.src='https://groleegni.net/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+
+  <!-- Monetag Banner Ads Script -->
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script');
+      script.src = "//s.monetag.com/loader.js";
+      script.async = true;
+      document.head.appendChild(script);
+    })();
+  </script>
 
   <style>
     body { 
@@ -142,18 +164,6 @@
 </head>
 
 <body>
-<button onclick="watchAd()">Watch Ad</button>
-
-<script>
-function watchAd() {
-  show_10047074().then(() => {
-    console.log('User watched the ad');
-    // Add your reward logic here
-  }).catch(() => {
-    console.log('Ad failed or was skipped');
-  });
-}
-</script>
   <header>
     <h1>Notcoin</h1>
     <p>Watch Ads & Earn Coins</p>
@@ -175,27 +185,27 @@ function watchAd() {
       <p>Click buttons below to watch ads and earn rewards</p>
       
       <div id="adContainer">
-        <!-- Interstitial Ad Unit -->
+        <!-- Monetag Interstitial Ad Unit -->
         <div class="ad-unit">
-          <div class="ad-label">Interstitial Ad - Earn 250 coins</div>
+          <div class="ad-label">Monetag Interstitial Ad - Earn 250 coins</div>
           <div class="ad-display">
             <div>Click button to show full-screen interstitial ad</div>
           </div>
           <button>📱 Watch Interstitial Ad (+250 coins)</button>
         </div>
 
-        <!-- Banner Ad Unit -->
+        <!-- Monetag Banner Ad Unit -->
         <div class="ad-unit">
-          <div class="ad-label">Banner Ad - Earn 150 coins</div>
-          <div class="ad-display" id="banner">
-            <div>Banner Ad Loading...</div>
+          <div class="ad-label">Monetag Banner Ad - Earn 150 coins</div>
+          <div class="ad-display" id="monetag-banner">
+            <div>Monetag Banner Loading...</div>
           </div>
           <button>🖼️ Watch Banner Ad (+150 coins)</button>
         </div>
 
-        <!-- Additional Ad Unit -->
+        <!-- Additional Monetag Ad Unit -->
         <div class="ad-unit">
-          <div class="ad-label">Video Ad - Earn 300 coins</div>
+          <div class="ad-label">Monetag Video Ad - Earn 300 coins</div>
           <div class="ad-display">
             <div>Click to watch video advertisement</div>
           </div>
@@ -233,7 +243,7 @@ function watchAd() {
     const loadingOverlay = document.getElementById('loadingOverlay');
 
     // Ad functions (your existing code)
-    function showInterstitial(reward) {
+    function showMonetagInterstitial(reward) {
       loadingOverlay.style.display = 'flex';
       setTimeout(() => {
         loadingOverlay.style.display = 'none';
@@ -368,27 +378,22 @@ function watchAd() {
       }
     });
 
-  // Replace the global handler section with this:
-document.querySelectorAll('#adContainer button').forEach(btn => {
-  btn.addEventListener('click', () => {
-    show_10047074().then(() => {
-      console.log('User watched the ad');
-      // Your reward logic here
-      let reward = 0;
-      const text = btn.innerText;
-      if (text.includes('+250')) reward = 250;
-      else if (text.includes('+150')) reward = 150;
-      else if (text.includes('+300')) reward = 300;
-      
-      coins += reward;
-      updateBalanceDisplay();
-      alert(`✅ You earned ${reward} coins!`);
-    }).catch(() => {
-      console.log('Ad failed or was skipped');
-      alert('Ad failed to load. Please try again.');
+    // Add a global handler for all ad buttons
+    document.querySelectorAll('#adContainer button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Detect reward based on button text
+        let reward = 0;
+        const text = btn.innerText;
+        if (text.includes('+250')) reward = 250;
+        else if (text.includes('+150')) reward = 150;
+        else if (text.includes('+300')) reward = 300;
+        else if (text.includes('+')) {
+          const match = text.match(/\+(\d+)/);
+          if (match) reward = parseInt(match[1]);
+        }
+        showAd(reward, 'realAd');
+      });
     });
-  });
-});
   </script>
 </body>
 </html>
