@@ -4,64 +4,86 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Watch Ads Mini Bot</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 40px;
+      background: #f5f5f5;
+    }
+    h2 {
+      color: #333;
+    }
+    #watchAdBtn {
+      padding: 12px 25px;
+      font-size: 18px;
+      background-color: #0088cc;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    #watchAdBtn:disabled {
+      background-color: #aaa;
+      cursor: not-allowed;
+    }
+  </style>
 </head>
 <body>
   <h2>Watch Ads & Earn Coins</h2>
   <button id="watchAdBtn">Watch Ad</button>
 
   <script>
-    // Wait until Telegram WebApp is ready
+    // Initialize Telegram WebApp safely
     function initTelegram() {
       if (typeof Telegram !== "undefined" && Telegram.WebApp) {
         Telegram.WebApp.ready();
         console.log("Telegram WebApp ready");
-
         setupAdButton();
       } else {
-        console.log("Telegram WebApp not ready yet, retrying...");
-        setTimeout(initTelegram, 100); // Retry until ready
+        console.log("Telegram WebApp not ready, retrying...");
+        setTimeout(initTelegram, 100);
       }
     }
 
-    // Set up the ad button
     function setupAdButton() {
       const btn = document.getElementById('watchAdBtn');
+      if (!btn) return;
+
       btn.addEventListener('click', function() {
-        loadMonetagAd();
+        btn.disabled = true;
+
+        if (typeof Monetag !== "undefined" && Monetag.showAd) {
+          Monetag.showAd({
+            zone: "10047074", // Your verified Monetag zone
+            onLoad: () => {
+              console.log("Ad loaded successfully");
+              btn.disabled = false;
+            },
+            onError: (err) => {
+              console.error("Ad failed to load:", err);
+              alert("Ad failed to load. Please try again.");
+              btn.disabled = false;
+            }
+          });
+        } else {
+          const script = document.createElement('script');
+          script.src = "https://fpyf8.com/88/tag.min.js"; // Monetag SDK
+          script.async = true;
+          script.onload = () => {
+            console.log("Monetag SDK loaded, retrying ad...");
+            btn.disabled = false;
+          };
+          script.onerror = () => {
+            console.error("Failed to load Monetag SDK");
+            alert("Failed to load ad SDK.");
+            btn.disabled = false;
+          };
+          document.body.appendChild(script);
+        }
       });
     }
 
-    // Load Monetag Ad safely
-    function loadMonetagAd() {
-      // Check if Monetag SDK exists
-      if (typeof Monetag !== "undefined" && Monetag.showAd) {
-        try {
-          Monetag.showAd({
-            zone: "10039081", // Your verified Monetag zone
-            onLoad: () => console.log("Ad loaded successfully"),
-            onError: (err) => console.log("Ad failed to load:", err)
-          });
-        } catch (e) {
-          console.error("Error showing ad:", e);
-          alert("Ad failed to load. Please try again.");
-        }
-      } else {
-        console.log("Monetag SDK not loaded yet, loading now...");
-
-        // Dynamically add the Monetag SDK script
-        const script = document.createElement('script');
-        script.src = "https://fpyf8.com/88/tag.min.js"; // Your Monetag SDK URL
-        script.async = true;
-        script.onload = () => {
-          console.log("Monetag SDK loaded, retrying ad...");
-          loadMonetagAd(); // Retry once loaded
-        };
-        script.onerror = () => alert("Failed to load ad SDK");
-        document.body.appendChild(script);
-      }
-    }
-
-    // Initialize everything
     initTelegram();
   </script>
 </body>
