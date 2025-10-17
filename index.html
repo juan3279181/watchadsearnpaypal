@@ -1,399 +1,571 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Notcoin - Watch Ads & Earn Coins</title>
-
-  <!-- Corrected One-Click Tag Script for Monetag -->
-  <script>
-  (function() {
-    var s = document.createElement('script');
-    s.dataset.zone = '10046811';
-    s.src = 'https://al5sm.com/tag.min.js';
-    document.head.appendChild(s);
-  })();
-  </script>
-
-  <!-- Monetag Interstitial Ads Script -->
-  <script>(function(s){s.dataset.zone='10039693',s.src='https://groleegni.net/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
-
-  <!-- Monetag Banner Ads Script -->
-  <script type="text/javascript">
-    (function() {
-      var script = document.createElement('script');
-      script.src = "//s.monetag.com/loader.js";
-      script.async = true;
-      document.head.appendChild(script);
-    })();
-  </script>
-
-  <style>
-    body { 
-      font-family: Arial, sans-serif; 
-      background: #111; 
-      color: #fff; 
-      margin: 0; 
-      padding: 0; 
-      overflow-x: hidden;
-    }
-    header, footer { 
-      background: #000; 
-      padding: 1em; 
-      text-align: center; 
-    }
-    .container { 
-      width: 95%; 
-      max-width: 600px; 
-      margin: 0 auto; 
-      padding: 10px; 
-    }
-    .card { 
-      background: #1e1e1e; 
-      border-radius: 12px; 
-      padding: 20px; 
-      margin-bottom: 15px; 
-      text-align: center; 
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3); 
-    }
-    h1, h2, h3, p { 
-      margin: 5px 0; 
-    }
-    button { 
-      background: orange; 
-      color: black; 
-      border: none; 
-      border-radius: 8px; 
-      padding: 12px 25px; 
-      cursor: pointer; 
-      font-weight: bold; 
-      margin: 5px; 
-      transition: transform 0.1s; 
-    }
-    button:disabled { 
-      opacity: 0.6; 
-      cursor: not-allowed; 
-    }
-    button:hover:not(:disabled) { 
-      transform: scale(1.05); 
-    }
-    button:active:not(:disabled) { 
-      transform: scale(0.97); 
-    }
-    input { 
-      border-radius: 8px; 
-      border: none; 
-      padding: 10px; 
-      width: 90%; 
-      max-width: 400px; 
-      margin: 5px 0; 
-    }
-    #adContainer { 
-      width: 100%; 
-      margin: 15px auto; 
-      text-align: center; 
-    }
-    #withdrawResult { 
-      margin-top: 10px;
-      color: #ddd; 
-    }
-
-    /* Loading Overlay */
-    #loadingOverlay { 
-      display: none; 
-      position: fixed; 
-      top: 0; 
-      left: 0; 
-      width: 100%; 
-      height: 100%; 
-      background: rgba(0,0,0,0.9); 
-      color: #fff; 
-      font-size: 24px; 
-      justify-content: center; 
-      align-items: center; 
-      z-index: 9999; 
-      flex-direction: column;
-    }
-    
-    .spinner {
-      border: 5px solid rgba(255, 165, 0, 0.3);
-      border-radius: 50%;
-      border-top: 5px solid orange;
-      width: 50px;
-      height: 50px;
-      animation: spin 1s linear infinite;
-      margin-bottom: 20px;
-    }
-    
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    /* Ad Unit Styling */
-    .ad-unit {
-      background: #2a2a2a;
-      padding: 20px;
-      border-radius: 10px;
-      margin: 15px 0;
-      border: 1px solid #444;
-    }
-    .ad-label {
-      color: #aaa;
-      font-size: 12px;
-      margin-bottom: 10px;
-    }
-    
-    /* Ad Display Areas */
-    .ad-display {
-      min-height: 100px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 10px 0;
-      background: #333;
-      border-radius: 8px;
-    }
-
-    @media(max-width: 480px){ 
-      button, input {
-        width: 100%;
-      } 
-    }
-  </style>
+  <meta
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Ad Reward System</title>
+    <script src='//libtl.com/sdk.js' data-zone='10047074' data-sdk='show_10047074'></script>
+    <style>
+        :root {
+            --primary: #00c853;
+            --primary-dark: #009624;
+            --secondary: #ff6d00;
+            --secondary-dark: #e65100;
+            --blue: #4285f4;
+            --blue-dark: #3367d6;
+            --dark: #121212;
+            --darker: #0a0a0a;
+            --light: #f5f5f5;
+            --gray: #2a2a2a;
+            --card-bg: #1f1f1f;
+            --gold: #ffd700;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--darker), #1a1a2e);
+            color: var(--light);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(0, 200, 83, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(255, 109, 0, 0.1) 0%, transparent 20%);
+            z-index: -1;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: var(--card-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .header {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            padding: 25px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, 
+                rgba(255,255,255,0.1) 0%,
+                rgba(255,255,255,0) 50%,
+                rgba(255,255,255,0.1) 100%);
+            z-index: 1;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 2;
+        }
+        
+        .developer {
+            display: inline-block;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-top: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+            backdrop-filter: blur(5px);
+        }
+        
+        .developer:hover {
+            background: rgba(0, 0, 0, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        .content {
+            padding: 25px;
+        }
+        
+        .user-info {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+        
+        .user-info p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+        
+        .user-badge {
+            position: absolute;
+            top: -10px;
+            right: 15px;
+            background: var(--gold);
+            color: #000;
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 15px 10px;
+            width: 45%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+        
+        .stat-card h3 {
+            font-size: 14px;
+            margin-bottom: 5px;
+            color: #aaa;
+        }
+        
+        .stat-card .value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .progress-container {
+            margin: 25px 0;
+            text-align: center;
+        }
+        
+        .progress-label {
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+        }
+        
+        .progress-bar {
+            height: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 10px;
+            width: 30%;
+            transition: width 0.5s ease;
+        }
+        
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin: 25px 0;
+        }
+        
+        /* 3D Button Styles */
+        .btn-3d {
+            position: relative;
+            padding: 16px 20px;
+            border: none;
+            border-radius: 15px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            color: white;
+            text-align: center;
+            transition: all 0.2s ease;
+            transform-style: preserve-3d;
+            perspective: 500px;
+            box-shadow: 
+                0 8px 0 var(--primary-dark),
+                0 15px 20px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .btn-3d::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            z-index: -1;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-3d::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.2), 
+                transparent);
+            transition: all 0.5s ease;
+            z-index: -1;
+        }
+        
+        .btn-3d:hover {
+            transform: translateY(4px);
+            box-shadow: 
+                0 4px 0 var(--primary-dark),
+                0 8px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .btn-3d:hover::after {
+            left: 100%;
+        }
+        
+        .btn-3d:active {
+            transform: translateY(8px);
+            box-shadow: 
+                0 0 0 var(--primary-dark),
+                0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        
+        .btn-secondary {
+            box-shadow: 
+                0 8px 0 var(--secondary-dark),
+                0 15px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .btn-secondary::before {
+            background: linear-gradient(45deg, var(--secondary), #ff9100);
+        }
+        
+        .btn-blue {
+            box-shadow: 
+                0 8px 0 var(--blue-dark),
+                0 15px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .btn-blue::before {
+            background: linear-gradient(45deg, var(--blue), #64b5f6);
+        }
+        
+        .website-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+        
+        .website-section h3 {
+            color: #64b5f6;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 15px;
+            color: #777;
+            font-size: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .firebase-logo {
+            display: inline-block;
+            margin-top: 10px;
+            font-size: 10px;
+            background: rgba(255, 152, 0, 0.1);
+            padding: 4px 8px;
+            border-radius: 4px;
+            color: #ffa726;
+        }
+        
+        .ad-container {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .ad-label {
+            font-size: 12px;
+            color: #aaa;
+            margin-bottom: 10px;
+        }
+        
+        /* Animation for ad watching */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .pulse {
+            animation: pulse 0.5s ease;
+        }
+        
+        .ad-notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 10px;
+            z-index: 1000;
+            display: none;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+        
+        /* Responsive design */
+        @media (max-width: 480px) {
+            .container {
+                border-radius: 15px;
+            }
+            
+            .header {
+                padding: 20px 15px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+        }
+    </style>
 </head>
-
 <body>
-  <header>
-    <h1>Notcoin</h1>
-    <p>Watch Ads & Earn Coins</p>
-  </header>
-
-  <div id="loadingOverlay">
-    <div class="spinner"></div>
-    <div>Processing Withdrawal...</div>
-  </div>
-
-  <div class="container">
-    <div class="card">
-      <h2>Your Balance</h2>
-      <h1 id="balance">0 Coins</h1>
+    <div class="ad-notification" id="ad-notification">Ad completed! +0.50 points added to your account</div>
+    
+    <div class="container">
+        <div class="header">
+            <h1>Premium Ad Reward System</h1>
+            <div class="developer" onclick="window.location.href='https://juan3279181.github.io/watchadsearnpaypal/'">Developer by Anonymous 😔</div>
+        </div>
+        
+        <div class="content">
+            <div class="user-info">
+                <div class="user-badge">VIP USER</div>
+                <p>Welcome, <span id="user-name">User123</span></p>
+                <p>User ID: <span id="user-id">#USR-7694</span></p>
+            </div>
+            
+            <div class="stats">
+                <div class="stat-card">
+                    <h3>Watched Ads</h3>
+                    <div class="value" id="watched-ads">18</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Earned Points</h3>
+                    <div class="value" id="earned-points">9.00</div>
+                </div>
+            </div>
+            
+            <div class="progress-container">
+                <div class="progress-label">
+                    <span>Progress to Bonus</span>
+                    <span id="ads-progress">30%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+            </div>
+            
+            <div class="ad-container">
+                <div class="ad-label">MONETAG INTERSTITIAL AD</div>
+                <div class="buttons">
+                    <button class="btn-3d" id="watch-ad-btn" onclick="watchAd()">Watch Ad (+0.50)</button>
+                    <button class="btn-3d btn-secondary" id="auto-ad-btn" onclick="startAutoAds()">Auto Show Ads</button>
+                    <button class="btn-3d" id="stop-auto-btn" onclick="stopAutoAds()">Stop Auto Ads</button>
+                </div>
+            </div>
+            
+        <div class="footer">
+            <p>Secured by Firebase • All transactions are protected</p>
+            <div class="firebase-logo">Firebase</div>
+        </div>
     </div>
 
-    <div class="card">
-      <h3>Watch Ads & Earn Coins</h3>
-      <p>Click buttons below to watch ads and earn rewards</p>
-      
-      <div id="adContainer">
-        <!-- Monetag Interstitial Ad Unit -->
-        <div class="ad-unit">
-          <div class="ad-label">Monetag Interstitial Ad - Earn 250 coins</div>
-          <div class="ad-display">
-            <div>Click button to show full-screen interstitial ad</div>
-          </div>
-          <button>📱 Watch Interstitial Ad (+250 coins)</button>
-        </div>
-
-        <!-- Monetag Banner Ad Unit -->
-        <div class="ad-unit">
-          <div class="ad-label">Monetag Banner Ad - Earn 150 coins</div>
-          <div class="ad-display" id="monetag-banner">
-            <div>Monetag Banner Loading...</div>
-          </div>
-          <button>🖼️ Watch Banner Ad (+150 coins)</button>
-        </div>
-
-        <!-- Additional Monetag Ad Unit -->
-        <div class="ad-unit">
-          <div class="ad-label">Monetag Video Ad - Earn 300 coins</div>
-          <div class="ad-display">
-            <div>Click to watch video advertisement</div>
-          </div>
-          <button>🎬 Watch Video Ad (+300 coins)</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <h3>Withdraw Earnings</h3>
-      <p>Minimum withdrawal: 25,000 Coins = ₹20</p>
-      <div>
-        <input type="number" id="coinAmount" placeholder="Enter Coin Amount"/>
-        <input type="email" id="paypalEmail" placeholder="Enter PayPal Email"/>
-        <button id="requestWithdrawal">Request PayPal Withdrawal</button>
-        <div id="withdrawResult"></div>
-      </div>
-    </div>
-  </div>
-
-  <footer>
-    <p>© 2025 Notcoin — Earn rewards by watching ads</p>
-  </footer>
-
-  <script>
-    // Initialize coins
-    let coins = 10950;
-    const balanceEl = document.getElementById('balance');
-    balanceEl.innerText = coins + ' Coins';
-
-    function updateBalanceDisplay() { 
-      balanceEl.innerText = coins + ' Coins'; 
-    }
-
-    const loadingOverlay = document.getElementById('loadingOverlay');
-
-    // Ad functions (your existing code)
-    function showMonetagInterstitial(reward) {
-      loadingOverlay.style.display = 'flex';
-      setTimeout(() => {
-        loadingOverlay.style.display = 'none';
-        coins += reward;
-        updateBalanceDisplay();
-        alert(`✅ You earned ${reward} coins!`);
-      }, 1500);
-    }
-
-    function showAd(reward, adNetwork) {
-      loadingOverlay.style.display = 'flex';
-      setTimeout(() => {
-        loadingOverlay.style.display = 'none';
-        coins += reward;
-        updateBalanceDisplay();
-        alert(`✅ You earned ${reward} coins from ${adNetwork} ad!`);
-      }, 1500);
-    }
-
-    // --- FIXED PAYPAL PAYOUT INTEGRATION ---
-    async function processPayPalPayout(email, amountInINR) {
-      try {
-        console.log('Sending payout request to backend...');
-        const response = await fetch('https://watchadsearnpaypalinstant81.onrender.com/api/payout', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email: email,
-            amount: amountInINR,
-            currency: 'INR',
-            userId: 'user123'
-          })
-        });
-        const data = await response.json();
-        console.log('Backend response:', data);
-        return data;
-      } catch (error) {
-        console.error('PayPal Payout Error:', error);
-        return { 
-          success: false, 
-          error: 'Network error: ' + error.message 
-        };
-      }
-    }
-
-    const COIN_TO_INR_RATE = 20 / 25000;
-
-    // Withdrawal button handler
-    document.getElementById('requestWithdrawal').onclick = async ()=>{
-      const coinAmount = Number(document.getElementById('coinAmount').value || 0);
-      const paypalEmail = document.getElementById('paypalEmail').value.trim();
-      const resultEl = document.getElementById('withdrawResult'); 
-      
-      resultEl.textContent = '';
-      resultEl.style.color = '#ddd';
-
-      if(!coinAmount || coinAmount < 25000){ 
-        resultEl.textContent='Minimum withdrawal is 25,000 coins.'; 
-        resultEl.style.color = 'orange';
-        return; 
-      }
-      if(coinAmount > coins){ 
-        resultEl.textContent='Insufficient balance.'; 
-        resultEl.style.color = 'orange';
-        return; 
-      }
-      if(!paypalEmail){ 
-        resultEl.textContent='Enter your PayPal email address.'; 
-        resultEl.style.color = 'orange';
-        return; 
-      }
-
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if(!emailRegex.test(paypalEmail)) {
-        resultEl.textContent='Please enter a valid email address.'; 
-        resultEl.style.color = 'orange';
-        return;
-      }
-
-      loadingOverlay.style.display = 'flex';
-      resultEl.textContent = 'Processing PayPal withdrawal...';
-      resultEl.style.color = 'yellow';
-
-      try {
-        const amountInINR = coinAmount * COIN_TO_INR_RATE;
-        const payoutResult = await processPayPalPayout(paypalEmail, amountInINR);
-        loadingOverlay.style.display = 'none';
-
-        if (payoutResult.success) {
-          coins -= coinAmount;
-          updateBalanceDisplay();
-          resultEl.textContent = `✅ Withdrawal successful! ₹${amountInINR.toFixed(2)} sent to ${paypalEmail}`;
-          resultEl.style.color = 'lightgreen';
-
-          document.getElementById('coinAmount').value = '';
-          document.getElementById('paypalEmail').value = '';
-        } else {
-          resultEl.textContent = `❌ Withdrawal failed: ${payoutResult.error || payoutResult.message || 'Unknown error'}`;
-          resultEl.style.color = 'red';
-          console.error('Withdrawal failed:', payoutResult);
+    <script>
+        // Constants
+        const POINTS_PER_AD = 50;
+        const ADS_FOR_BONUS = 10;
+        
+        // State variables
+        let watchedAdsCount = 0;
+        let earnedPoints = 0;
+        let autoAdInterval;
+        let userId = null;
+        
+        // DOM Elements
+        const watchedAdsEl = document.getElementById('watched-ads');
+        const earnedPointsEl = document.getElementById('earned-points');
+        const adsProgressEl = document.getElementById('ads-progress');
+        const progressFillEl = document.getElementById('progress-fill');
+        const adNotificationEl = document.getElementById('ad-notification');
+        
+        // Initialize the app
+        function initApp() {
+            // Load user data
+            if (localStorage.getItem('watchedAdsCount')) {
+                watchedAdsCount = parseInt(localStorage.getItem('watchedAdsCount'));
+                earnedPoints = parseFloat(localStorage.getItem('earnedPoints'));
+            }
+            
+            // Generate user ID if not exists
+            if (!localStorage.getItem('userId')) {
+                const newUserId = 'USR-' + Math.floor(10000 + Math.random() * 90000);
+                localStorage.setItem('userId', newUserId);
+            }
+            
+            userId = localStorage.getItem('userId');
+            document.getElementById('user-id').textContent = `#${userId}`;
+            document.getElementById('user-name').textContent = `User${Math.floor(1000 + Math.random() * 9000)}`;
+            
+            updateUI();
         }
-      } catch(err) { 
-        loadingOverlay.style.display = 'none';
-        console.error('Withdrawal Error:', err);
-        resultEl.textContent = '❌ Network error processing withdrawal. Check console for details.'; 
-        resultEl.style.color = 'red';
-      }
-    };
-
-    // Auto-calculate INR amount
-    document.getElementById('coinAmount').addEventListener('input', function() {
-      const coinAmount = Number(this.value || 0);
-      const amountInINR = coinAmount * COIN_TO_INR_RATE;
-      const button = document.getElementById('requestWithdrawal');
-      if (coinAmount >= 25000) {
-        button.textContent = `Request ₹${amountInINR.toFixed(2)} PayPal Withdrawal`;
-      } else {
-        button.textContent = 'Request PayPal Withdrawal';
-      }
-    });
-
-    // Test backend connection on load
-    window.addEventListener('load', async () => {
-      try {
-        const response = await fetch('https://watchadsearnpaypalinstant81.onrender.com/health');
-        const data = await response.json();
-        console.log('Backend connection test:', data);
-      } catch (error) {
-        console.error('Backend connection failed:', error);
-      }
-    });
-
-    // Add a global handler for all ad buttons
-    document.querySelectorAll('#adContainer button').forEach(btn => {
-      btn.addEventListener('click', () => {
-        // Detect reward based on button text
-        let reward = 0;
-        const text = btn.innerText;
-        if (text.includes('+250')) reward = 250;
-        else if (text.includes('+150')) reward = 150;
-        else if (text.includes('+300')) reward = 300;
-        else if (text.includes('+')) {
-          const match = text.match(/\+(\d+)/);
-          if (match) reward = parseInt(match[1]);
+        
+        // Update UI elements
+        function updateUI() {
+            watchedAdsEl.textContent = watchedAdsCount;
+            earnedPointsEl.textContent = earnedPoints.toFixed(2);
+            
+            const progress = (watchedAdsCount % ADS_FOR_BONUS) / ADS_FOR_BONUS * 100;
+            adsProgressEl.textContent = `${Math.round(progress)}%`;
+            progressFillEl.style.width = `${progress}%`;
+            
+            // Add animation when points change
+            earnedPointsEl.classList.remove('pulse');
+            void earnedPointsEl.offsetWidth; // Trigger reflow
+            earnedPointsEl.classList.add('pulse');
         }
-        showAd(reward, 'realAd');
-      });
-    });
-  </script>
+        
+        // Watch ad function using Monetag
+        function watchAd() {
+            // Show ad notification
+            showAdNotification("Loading ad... Please wait");
+            
+            // Show Monetag ad
+            if (typeof show_10047074 === 'function') {
+                show_10047074().then(() => {
+                    // Ad shown successfully
+                    watchedAdsCount++;
+                    earnedPoints += POINTS_PER_AD;
+                    
+                    // Every 10 ads, give bonus points
+                    if (watchedAdsCount % ADS_FOR_BONUS === 0) {
+                        earnedPoints += 1.00; // Bonus point
+                    }
+                    
+                    // Save data
+                    localStorage.setItem('watchedAdsCount', watchedAdsCount);
+                    localStorage.setItem('earnedPoints', earnedPoints);
+                    
+                    updateUI();
+                    
+                    // Show success notification
+                    showAdNotification("Ad completed! +0.50 points added to your account");
+                }).catch(error => {
+                    console.error("Ad error:", error);
+                    showAdNotification("Failed to show ad. Please try again.");
+                });
+            } else {
+                // Fallback to simulated ad
+                setTimeout(() => {
+                    watchedAdsCount++;
+                    earnedPoints += POINTS_PER_AD;
+                    
+                    // Every 10 ads, give bonus points
+                    if (watchedAdsCount % ADS_FOR_BONUS === 0) {
+                        earnedPoints += 1.00; // Bonus point
+                    }
+                    
+                    // Save data
+                    localStorage.setItem('watchedAdsCount', watchedAdsCount);
+                    localStorage.setItem('earnedPoints', earnedPoints);
+                    
+                    updateUI();
+                    
+                    // Show success notification
+                    showAdNotification("Ad completed! +0.50 points added to your account");
+                }, 2000);
+            }
+        }
+        
+        // Auto show ads
+        function startAutoAds() {
+            autoAdInterval = setInterval(watchAd, 30000); // Auto show ad every 30 seconds
+            document.getElementById('auto-ad-btn').textContent = "Auto Ads Running...";
+            showAdNotification("Auto ads started. Ads will play every 30 seconds.");
+        }
+        
+        function stopAutoAds() {
+            clearInterval(autoAdInterval);
+            document.getElementById('auto-ad-btn').textContent = "Auto Show Ads";
+            showAdNotification("Auto ads stopped.");
+        }
+        
+        // Show ad notification
+        function showAdNotification(message) {
+            adNotificationEl.textContent = message;
+            adNotificationEl.style.display = 'block';
+            
+            setTimeout(() => {
+                adNotificationEl.style.display = 'none';
+            }, 3000);
+        }
+        
+        // Initialize app on load
+        window.onload = initApp;
+    </script>
 </body>
 </html>
